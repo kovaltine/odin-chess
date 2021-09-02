@@ -86,7 +86,7 @@ end
 # draws the board with coordinates
 def draw_board(board)
   letters = %w[a b c d e f g h]
-  numbers = %w[1 2 3 4 5 6 7 8]
+  numbers = %w[0 1 2 3 4 5 6 7]
   i = 0
   board.each do |row|
     puts "#{letters[i]} | #{row.join(' ')} |"
@@ -126,4 +126,64 @@ def unflatten_arr(arr)
   board
 end
 
-chess_board(black_positions, white_positions)
+# player puts in coordinates that correspond with a position in the arr
+def get_piece_position
+  puts 'number first, then the letter'
+  coord = gets.chomp.chars
+  # check the arr, depends on whose turn it is
+  x = coord[0].to_i
+  y = convert_letter_to_num(coord[1])
+  [y, x]
+end
+
+def convert_letter_to_num(letter)
+  index = 0
+  ('a'..'h').to_a.each do |char|
+    return index if char == letter
+
+    index += 1
+  end
+  'invalid input'
+end
+
+def valid_piece_position?(coordinates, position_arr)
+  return false if coordinates.nil?
+
+  position_arr.map do |piece_position|
+    return true if piece_position[1] == coordinates[0] && piece_position[2] == coordinates[1]
+  end
+  false
+end
+
+def update_position(new_coord, piece_coord, position_arr)
+  position_arr.map do |piece_position|
+    next unless piece_position[1] == piece_coord[0] && piece_position[2] == piece_coord[1]
+
+    # update piece position
+    piece_position[1] = new_coord[0]
+    piece_position[2] = new_coord[1]
+  end
+  position_arr
+end
+
+# alternate turns and move pieces, update the positions arr and remake the board
+def play_game(black_positions, white_positions)
+  # while play_game?
+  chess_board(black_positions, white_positions)
+  puts 'enter the coordinates of the piece you would like to move'
+  piece_coordinates = get_piece_position until valid_piece_position?(piece_coordinates, white_positions)
+  puts 'enter the new coordinates'
+  new_coordinates = get_piece_position
+  new_white_positions = update_position(new_coordinates, piece_coordinates, white_positions)
+  puts 'one round done'
+  chess_board(black_positions, new_white_positions)
+  # toggle player
+  # toggle_index
+  # end
+end
+
+def play_game?
+  true
+end
+
+play_game(black_positions, white_positions)
