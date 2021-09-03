@@ -7,5 +7,6 @@ This is a command line chess game where two players can play against each other.
 2. board can be saved at any time
 3. include testing for important functions
 4. write the code as clean as possible
+5. Program tells user check and checkmate in the appropriate situations
 
 Optional upgrade: build a simple AI that does a random legal move
