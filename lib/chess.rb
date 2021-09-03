@@ -62,15 +62,20 @@ class Chess
   # make sure white always goes first
   def play_game
     until team_lost?(@player_positions)
-      puts "#{@player} your turn"
       chess_board(@black_positions, @white_positions)
-      puts 'enter the coordinates of the piece you would like to move'
-      piece_coordinates = get_piece_position until valid_piece_position?(piece_coordinates, @player_positions)
-      puts 'enter the new coordinates'
-      new_coordinates = get_piece_position
-      @player_positions = update_position(new_coordinates, piece_coordinates, @player_positions)
+      move_piece
       @player = toggle_team
     end
+    puts "Congratulations #{@player}, you won!"
+  end
+
+  def move_piece
+    puts "#{@player} : move"
+    puts 'enter the coordinates of the piece you would like to move'
+    piece_coordinates = get_piece_position until valid_piece_position?(piece_coordinates, @player_positions)
+    puts 'enter the new coordinates'
+    new_coordinates = get_piece_position
+    @player_positions = update_position(new_coordinates, piece_coordinates, @player_positions)
   end
 
   def toggle_team
