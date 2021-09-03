@@ -2,7 +2,7 @@
 
 require_relative './chess'
 
-# includes the functions to change the board
+# includes the functions to make the board
 module Board
   # creates the board with starting positions
   def chess_board(black = @black_positions, white = @white_positions)

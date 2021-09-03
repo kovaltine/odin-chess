@@ -45,18 +45,43 @@ class Chess
       [" \u2659", 6, 6],
       [" \u2659", 6, 7]
     ]
+    # player can choose their team
+    @player = 0
+    @player_positions = @white_positions
     play_game
   end
 
+  # the exit condition will be if one of the players has lost their king
+  def team_lost?(arr)
+    arr.map do |piece|
+      return false if piece[0] == " \u2654" || piece[0] == " \u265a"
+    end
+    true
+  end
+
+  # make sure white always goes first
   def play_game
-    chess_board
-    puts 'enter the coordinates of the piece you would like to move'
-    piece_coordinates = get_piece_position until valid_piece_position?(piece_coordinates, @white_positions)
-    puts 'enter the new coordinates'
-    new_coordinates = get_piece_position
-    new_white_positions = update_position(new_coordinates, piece_coordinates, @white_positions)
-    puts 'one round done'
-    chess_board(@black_positions, new_white_positions)
+    until team_lost?(@player_positions)
+      puts "#{@player} your turn"
+      chess_board(@black_positions, @white_positions)
+      puts 'enter the coordinates of the piece you would like to move'
+      piece_coordinates = get_piece_position until valid_piece_position?(piece_coordinates, @player_positions)
+      puts 'enter the new coordinates'
+      new_coordinates = get_piece_position
+      @player_positions = update_position(new_coordinates, piece_coordinates, @player_positions)
+      @player = toggle_team
+    end
+  end
+
+  def toggle_team
+    @player = toggle_index(@player)
+    case @player
+    when 0
+      @player_positions = @white_positions
+    when 1
+      @player_positions = @black_positions
+    end
+    @player
   end
 
   # player puts in coordinates that correspond with a position in the arr
