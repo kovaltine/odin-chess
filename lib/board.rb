@@ -9,8 +9,8 @@ module Board
     # a grid of 8x8 coloured squares
     board = make_board
     # add the chess pieces
-    board_with_black = add_pieces(board, black)
-    board_black_white = add_pieces(board_with_black, white)
+    board_with_black = find_piece_position(board, black)
+    board_black_white = find_piece_position(board_with_black, white)
     draw_board(board_black_white)
   end
 
@@ -21,10 +21,20 @@ module Board
     unflatten_arr(squares_arr)
   end
 
-  def add_pieces(arr, positions)
-    board = arr
-    positions.map do |piece|
-      board[piece[1]][piece[2]] = piece[0]
+  def find_piece_position(board_arr, team_hash)
+    board = board_arr
+    team_hash.each do |_piece, properties|
+      position_arr = properties['position']
+      next if position_arr.nil?
+
+      add_pieces(position_arr, properties, board)
+    end
+    board
+  end
+
+  def add_pieces(positions, properties, board)
+    positions.each do |position|
+      board[position[0]][position[1]] = properties['piece_code']
     end
     board
   end

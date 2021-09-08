@@ -27,6 +27,36 @@ class Chess
     #   [" \u265F", 1, 6],
     #   [" \u265F", 1, 7]
     # ]
+
+    # the specific pieces move in the same way, so can save the movement in another area
+
+    @black_positions = {
+      'rook' => {
+        'piece_code' => " \u265c",
+        'position' => [[0, 0], [0, 7]]
+      },
+      'knight' => {
+        'piece_code' => " \u265e",
+        'position' => [[0, 1], [0, 6]]
+      },
+      'bishop' => {
+        'piece_code' => " \u265d",
+        'position' => [[0, 2], [0, 5]]
+      },
+      'queen' => {
+        'piece_code' => " \u265b",
+        'position' => [[0, 3]]
+      },
+      'king' => {
+        'piece_code' => " \u265a",
+        'position' => [[0, 4]]
+      },
+      'pawn' => {
+        'piece_code' => " \u265F",
+        'position' => [[1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]]
+      }
+    }
+
     # @white_positions = [
     #   [" \u2656", 7, 0], # rook
     #   [" \u2658", 7, 1], # knight
@@ -46,35 +76,6 @@ class Chess
     #   [" \u2659", 6, 7]
     # ]
 
-    # the specific pieces move in the same way, so can save the movement in another area
-
-    @black_positions = {
-      'rook' => {
-        'piece_code' => " \u265c",
-        'position' => [[0, 0], [0, 7]]
-      },
-      'knight' => {
-        'piece_code' => " \u265e",
-        'position' => [[0, 1], [0, 6]]
-      },
-      'bishop' => {
-        'piece_code' => " \u265d",
-        'position' => [[0, 2], [0, 5]]
-      },
-      'queen' => {
-        'piece_code' => " \u265b",
-        'position' => [0, 3]
-      },
-      'king' => {
-        'piece_code' => " \u265a",
-        'position' => [0, 4]
-      },
-      'pawn' => {
-        'piece_code' => " \u265F",
-        'position' => [[1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]]
-      }
-    }
-
     @white_positions = {
       'rook' => {
         'piece_code' => " \u2656",
@@ -90,11 +91,11 @@ class Chess
       },
       'queen' => {
         'piece_code' => " \u2655",
-        'position' => [7, 3]
+        'position' => [[7, 3]]
       },
       'king' => {
         'piece_code' => " \u2654",
-        'position' => [7, 4]
+        'position' => [[7, 4]]
       },
       'pawn' => {
         'piece_code' => " \u2659",
@@ -103,7 +104,7 @@ class Chess
     }
 
     # player can choose their team
-    @player = choose_team
+    @player = 0 # choose_team
     @player_positions = @white_positions
     play_game
   end
@@ -124,15 +125,15 @@ class Chess
 
   # the exit condition will be if one of the players has lost their king
   def team_lost?(arr)
-    arr.map do |piece|
-      return false if piece[0] == " \u2654" || piece[0] == " \u265a"
-    end
-    true
+    return true if arr.dig('king', 'position').empty?
+
+    false
   end
 
   # make sure white always goes first
   def play_game
     until team_lost?(@player_positions)
+      # puts system('clear')
       chess_board(@black_positions, @white_positions)
       move_piece
       @player = toggle_team
@@ -182,8 +183,13 @@ class Chess
   def valid_piece_position?(coordinates, position_arr)
     return false if coordinates.nil?
 
-    position_arr.map do |piece_position|
-      return true if piece_position[1] == coordinates[0] && piece_position[2] == coordinates[1]
+    position_arr.each do |_piece, properties|
+      position_arr = properties['position']
+      next if position_arr.nil?
+
+      position_arr.each do |position|
+        return true if position == coordinates
+      end
     end
     false
   end
@@ -192,12 +198,14 @@ class Chess
   # check for check/checkmate.
   # how to make sure the king can't move somewhere it would be taken?
   def update_position(new_coord, piece_coord, position_arr)
-    position_arr.map do |piece_position|
-      next unless piece_position[1] == piece_coord[0] && piece_position[2] == piece_coord[1]
+    position_arr.each_value do |properties|
+      arr = properties['position']
+      arr.map do |piece_position|
+        next unless piece_position == piece_coord
 
-      # update piece position
-      piece_position[1] = new_coord[0]
-      piece_position[2] = new_coord[1]
+        arr.delete piece_position
+        arr.push(new_coord)
+      end
     end
     position_arr
   end
