@@ -1,17 +1,20 @@
 # frozen_string_literal:true
 
 require_relative './chess'
+require_relative './chess_piece'
 
 # includes the functions to make the board
 module Board
   # creates the board with starting positions
-  def chess_board(black = @black_positions, white = @white_positions)
+  def chess_board(pieces)
     # a grid of 8x8 coloured squares
     board = make_board
-    # add the chess pieces
-    board_with_black = find_piece_position(board, black)
-    board_black_white = find_piece_position(board_with_black, white)
-    draw_board(board_black_white)
+    # goes through each key and finds the position
+    # won't render the pieces that no longer have a position. They'll be put somewhere else
+    board_with_pieces = find_piece_position(board, pieces)
+    # board_with_black = find_piece_position(board, black)
+    # board_black_white = find_piece_position(board_with_black, white)
+    draw_board(board_with_pieces)
   end
 
   # makes the board
@@ -21,11 +24,11 @@ module Board
     unflatten_arr(squares_arr)
   end
 
-  def find_piece_position(board_arr, team_hash)
+  def find_piece_position(board_arr, pieces)
     board = board_arr
-    team_hash.each do |_piece, properties|
-      position_arr = properties['position']
-      next if position_arr.nil?
+    pieces.each do |_piece, properties|
+      position_arr = properties['square']
+      # next if position_arr.nil?
 
       add_pieces(position_arr, properties, board)
     end
@@ -34,7 +37,7 @@ module Board
 
   def add_pieces(positions, properties, board)
     positions.each do |position|
-      board[position[0]][position[1]] = properties['piece_code']
+      board[position[0]][position[1]] = properties['code']
     end
     board
   end
