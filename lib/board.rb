@@ -9,11 +9,7 @@ module Board
   def chess_board(pieces)
     # a grid of 8x8 coloured squares
     board = make_board
-    # goes through each key and finds the position
-    # won't render the pieces that no longer have a position. They'll be put somewhere else
     board_with_pieces = find_piece_position(board, pieces)
-    # board_with_black = find_piece_position(board, black)
-    # board_black_white = find_piece_position(board_with_black, white)
     draw_board(board_with_pieces)
   end
 
@@ -28,7 +24,6 @@ module Board
     board = board_arr
     pieces.each do |_piece, properties|
       position_arr = properties['square']
-      # next if position_arr.nil?
 
       add_pieces(position_arr, properties, board)
     end

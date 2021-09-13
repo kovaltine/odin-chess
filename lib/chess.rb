@@ -9,14 +9,11 @@ class Chess
   include ChessPiece
 
   def initialize
-    # @black_positions = black_positions
-    # @white_positions = white_positions
     @chess_pieces = start_chess_pieces
     @pieces_lost = []
     # how to make sure you can only select your own color?
     # filter piece locations to those only starting with "black" or "white"
     @player = 'black' # choose_team
-    # @player_positions = @white_positions
     play_game
   end
 
@@ -105,7 +102,6 @@ class Chess
     false
   end
 
-  # return a special message if it takes a King
   # check for check/checkmate.
   # how to make sure the king can't move somewhere it would be taken?
   def update_position(new_coord, piece_coord, chess_pieces)
