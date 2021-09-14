@@ -24,133 +24,165 @@ WHITE_PIECES = {
 CHESS_PIECES = {
   'black_queen_rook' => {
     'code' => BLACK_PIECES.fetch('rook'),
-    'square' => [[0, 0]]
+    'square' => [[0, 0]],
+    'color' => 'black'
   },
   'black_king_rook' => {
     'code' => BLACK_PIECES.fetch('rook'),
-    'square' => [[0, 7]]
+    'square' => [[0, 7]],
+    'color' => 'black'
   },
   'black_queen_knight' => {
     'code' => BLACK_PIECES.fetch('knight'),
-    'square' => [[0, 1]]
+    'square' => [[0, 1]],
+    'color' => 'black'
   },
   'black_king_knight' => {
     'code' => BLACK_PIECES.fetch('knight'),
-    'square' => [[0, 6]]
+    'square' => [[0, 6]],
+    'color' => 'black'
   },
   'black_queen_bishop' => {
     'code' => BLACK_PIECES.fetch('bishop'),
-    'square' => [[0, 2]]
+    'square' => [[0, 2]],
+    'color' => 'black'
   },
   'black_king_bishop' => {
     'code' => BLACK_PIECES.fetch('bishop'),
-    'square' => [[0, 5]]
+    'square' => [[0, 5]],
+    'color' => 'black'
   },
   'black_queen' => {
     'code' => BLACK_PIECES.fetch('queen'),
-    'square' => [[0, 3]]
+    'square' => [[0, 3]],
+    'color' => 'black'
   },
   'black_king' => {
     'code' => BLACK_PIECES.fetch('king'),
-    'square' => [[0, 4]]
+    'square' => [[0, 4]],
+    'color' => 'black'
   },
   'black_pawn_one' => {
     'code' => BLACK_PIECES.fetch('pawn'),
-    'square' => [[1, 0]]
+    'square' => [[1, 0]],
+    'color' => 'black'
   },
   'black_pawn_two' => {
     'code' => BLACK_PIECES.fetch('pawn'),
-    'square' => [[1, 1]]
+    'square' => [[1, 1]],
+    'color' => 'black'
   },
   'black_pawn_three' => {
     'code' => BLACK_PIECES.fetch('pawn'),
-    'square' => [[1, 2]]
+    'square' => [[1, 2]],
+    'color' => 'black'
   },
   'black_pawn_four' => {
     'code' => BLACK_PIECES.fetch('pawn'),
-    'square' => [[1, 3]]
+    'square' => [[1, 3]],
+    'color' => 'black'
   },
   'black_pawn_five' => {
     'code' => BLACK_PIECES.fetch('pawn'),
-    'square' => [[1, 4]]
+    'square' => [[1, 4]],
+    'color' => 'black'
   },
   'black_pawn_six' => {
     'code' => BLACK_PIECES.fetch('pawn'),
-    'square' => [[1, 5]]
+    'square' => [[1, 5]],
+    'color' => 'black'
   },
   'black_pawn_seven' => {
     'code' => BLACK_PIECES.fetch('pawn'),
-    'square' => [[1, 6]]
+    'square' => [[1, 6]],
+    'color' => 'black'
   },
   'black_pawn_eight' => {
     'code' => BLACK_PIECES.fetch('pawn'),
-    'square' => [[1, 7]]
+    'square' => [[1, 7]],
+    'color' => 'black'
   },
 
-  # #whitepieces
+  # whitepieces
   'white_queen_rook' => {
     'code' => WHITE_PIECES.fetch('rook'),
-    'square' => [[7, 0]]
+    'square' => [[7, 0]],
+    'color' => 'white'
   },
   'white_king_rook' => {
     'code' => WHITE_PIECES.fetch('rook'),
-    'square' => [[7, 7]]
+    'square' => [[7, 7]],
+    'color' => 'white'
   },
   'white_queen_knight' => {
     'code' => WHITE_PIECES.fetch('knight'),
-    'square' => [[7, 1]]
+    'square' => [[7, 1]],
+    'color' => 'white'
   },
   'white_king_knight' => {
     'code' => WHITE_PIECES.fetch('knight'),
-    'square' => [[7, 6]]
+    'square' => [[7, 6]],
+    'color' => 'white'
   },
   'white_queen_bishop' => {
     'code' => WHITE_PIECES.fetch('bishop'),
-    'square' => [[7, 2]]
+    'square' => [[7, 2]],
+    'color' => 'white'
   },
   'white_king_bishop' => {
     'code' => WHITE_PIECES.fetch('bishop'),
-    'square' => [[7, 5]]
+    'square' => [[7, 5]],
+    'color' => 'white'
   },
   'white_queen' => {
     'code' => WHITE_PIECES.fetch('queen'),
-    'square' => [[7, 3]]
+    'square' => [[7, 3]],
+    'color' => 'white'
   },
   'white_king' => {
     'code' => WHITE_PIECES.fetch('king'),
-    'square' => [[7, 4]]
+    'square' => [[7, 4]],
+    'color' => 'white'
   },
   'white_pawn_one' => {
     'code' => WHITE_PIECES.fetch('pawn'),
-    'square' => [[6, 0]]
+    'square' => [[6, 0]],
+    'color' => 'white'
   },
   'white_pawn_two' => {
     'code' => WHITE_PIECES.fetch('pawn'),
-    'square' => [[6, 1]]
+    'square' => [[6, 1]],
+    'color' => 'white'
   },
   'white_pawn_three' => {
     'code' => WHITE_PIECES.fetch('pawn'),
-    'square' => [[6, 2]]
+    'square' => [[6, 2]],
+    'color' => 'white'
   },
   'white_pawn_four' => {
     'code' => WHITE_PIECES.fetch('pawn'),
-    'square' => [[6, 3]]
+    'square' => [[6, 3]],
+    'color' => 'white'
   },
   'white_pawn_five' => {
     'code' => WHITE_PIECES.fetch('pawn'),
-    'square' => [[6, 4]]
+    'square' => [[6, 4]],
+    'color' => 'white'
   },
   'white_pawn_six' => {
     'code' => WHITE_PIECES.fetch('pawn'),
-    'square' => [[6, 5]]
+    'square' => [[6, 5]],
+    'color' => 'white'
   },
   'white_pawn_seven' => {
     'code' => WHITE_PIECES.fetch('pawn'),
-    'square' => [[6, 6]]
+    'square' => [[6, 6]],
+    'color' => 'white'
   },
   'white_pawn_eight' => {
     'code' => WHITE_PIECES.fetch('pawn'),
-    'square' => [[6, 7]]
+    'square' => [[6, 7]],
+    'color' => 'white'
   }
 }
 

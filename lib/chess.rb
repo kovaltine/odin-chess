@@ -13,18 +13,19 @@ class Chess
     @pieces_lost = []
     # how to make sure you can only select your own color?
     # filter piece locations to those only starting with "black" or "white"
-    @player = 'black' # choose_team
+    @team = 'black' # choose_team
     play_game
   end
 
+  # this function needs to get redone for sure
   def choose_team
     puts 'Would you like to play as black or white?'
     input = gets.chomp
     case input
     when 'white'
-      @player = 0
+      @team = 0
     when 'black'
-      @player = 1
+      @team = 1
     else
       puts "please enter 'black' or 'white'"
       choose_team
@@ -41,38 +42,62 @@ class Chess
   # make sure white always goes first
   def play_game
     until team_lost?
-      @player = toggle_team
-      # puts system('clear')
-      puts "Total pieces lost: #{@pieces_lost.flatten}"
+      @team = toggle_team(@team)
+      # puts "Total pieces lost: #{@pieces_lost.flatten}"
+      puts_pieces_lost
       chess_board(@chess_pieces)
       @chess_pieces = move_piece
 
     end
-    puts "Congratulations #{@player}, you won!"
+    puts "Congratulations #{@team}, you won!"
+  end
+
+  def puts_pieces_lost
+    system 'clear'
+    puts "Casualties: #{@pieces_lost.join}"
   end
 
   def move_piece
-    puts "#{@player}'s move"
+    puts "#{@team}'s move"
     puts 'enter the coordinates of the piece you would like to move'
-    piece_coordinates = get_piece_position until valid_piece_position?(piece_coordinates, @chess_pieces)
-    puts 'enter the new coordinates'
-    new_coordinates = get_piece_position
+    piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
+
+    new_coordinates = new_piece_position
 
     update_position(new_coordinates, piece_coordinates, @chess_pieces)
   end
 
-  def toggle_team
-    case @player
+  def toggle_team(team)
+    case team
     when 'black'
-      @player = 'white'
+      'white'
     when 'white'
-      @player = 'black'
+      'black'
     end
-    @player
+  end
+
+  def new_piece_position
+    puts 'enter the new coordinates'
+    opposing_team = toggle_team(@team)
+    coord = piece_position until valid_piece_move?(coord, opposing_team)
+    coord
+  end
+
+  # if moving to new can't move to the same place that has the same color
+  # if selecting a piece must be one that's on your team
+  def valid_piece_move?(coordinates, team = @team)
+    return false if coordinates.nil?
+
+    @chess_pieces.each_pair do |_key, value|
+      return true if value['color'] == team && value['square'] == [coordinates]
+
+      return false if value['color'] != team && value['square'] == [coordinates]
+    end
+    true
   end
 
   # player puts in coordinates that correspond with a position in the arr
-  def get_piece_position
+  def piece_position
     puts 'number first, then the letter'
     coord = gets.chomp.chars
     x = coord[0].to_i
@@ -88,18 +113,6 @@ class Chess
       index += 1
     end
     'invalid input'
-  end
-
-  def valid_piece_position?(coordinates, position_arr)
-    return false if coordinates.nil?
-
-    position_arr.each_pair do |_key, value|
-      value.each_value do |position|
-        return true if position == [coordinates]
-      end
-    end
-
-    false
   end
 
   # check for check/checkmate.
@@ -119,7 +132,7 @@ class Chess
     remove_piece(new_coord, piece_key, board_pieces)
   end
 
-  # that removes a piece from the hash if it has been overtaken
+  # removes a piece from the hash if it has been overtaken
   def remove_piece(coord, piece, board_pieces)
     board_pieces.each_pair do |key, value|
       value.each_value do |data|
