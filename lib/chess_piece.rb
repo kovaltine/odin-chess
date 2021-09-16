@@ -1,8 +1,5 @@
 # frozen_string_literal:true
 
-# when you select a chess piece, then it runs all the scenarios of where that piece can go
-#     it reloads the board and highlights those areas
-
 BLACK_PIECES = {
   'rook' => " \u2656",
   'knight' => " \u2658",
@@ -192,30 +189,69 @@ module ChessPiece
     CHESS_PIECES
   end
 
-  def find_piece_options(piece, position)
-    case piece
-    when 'rook'
-      # call a function to find out where it can go
-      movement = [[position[0], 0..7], [0..7, position[1]]]
-      piece_movement(movement, position)
-    when 'knight'
-      movement = [
-        [1, 2],
-        [-2, -1],
-        [-1, 2],
-        [2, -1],
-        [1, -2],
-        [-2, 1],
-        [-1, -2],
-        [2, 1]
-      ]
-      piece_movement(movement, position)
+  # when a piece is selected it will match the piece with the movement pattern
+  def movement_pattern(coord)
+    puts 'movement_pattern'
+    p coord
+    # find the piece with the matching coordinates
+    piece_hash = find_piece_hash(coord)
+    p piece_hash # ex:  {\"code\"=>\" ♜\", \"square\"=>[[7, 0]], \"color\"=>\"white\"}"
+
+    # find the type of piece
+    piece_type = find_piece_type(piece_hash)
+    p piece_type # ex: "rook"
+
+    # determine the pattern that it must follow
+  end
+
+  def find_piece_type(piece_hash)
+    case piece_hash['color']
+    when 'white'
+      WHITE_PIECES.each_pair do |key, value|
+        return key if value == piece_hash['code']
+      end
+    when 'black'
+      BLACK_PIECES.each_pair do |key, value|
+        return key if value == piece_hash['code']
+      end
     end
   end
 
-  def piece_movement(movement, position)
-    # it can't go over top another piece
-    # it can't take on of its own pieces
-    # it can't go off the board
+  def find_piece_hash(coord)
+    @chess_pieces.each do |key, value|
+      value.each_key do |_property|
+        next unless value['square'].flatten == coord
+
+        return @chess_pieces.fetch(key)
+      end
+    end
+    p 'invalid'
   end
+
+  # def find_piece_options(piece, position)
+  #   case piece
+  #   when 'rook'
+  #     # call a function to find out where it can go
+  #     movement = [[position[0], 0..7], [0..7, position[1]]]
+  #     piece_movement(movement, position)
+  #   when 'knight'
+  #     movement = [
+  #       [1, 2],
+  #       [-2, -1],
+  #       [-1, 2],
+  #       [2, -1],
+  #       [1, -2],
+  #       [-2, 1],
+  #       [-1, -2],
+  #       [2, 1]
+  #     ]
+  #     piece_movement(movement, position)
+  #   end
+  # end
+
+  # def piece_movement(movement, position)
+  #   # it can't go over top another piece
+  #   # it can't take on of its own pieces
+  #   # it can't go off the board
+  # end
 end

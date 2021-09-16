@@ -11,8 +11,6 @@ class Chess
   def initialize
     @chess_pieces = start_chess_pieces
     @pieces_lost = []
-    # how to make sure you can only select your own color?
-    # filter piece locations to those only starting with "black" or "white"
     @team = 'black' # choose_team
     play_game
   end
@@ -43,7 +41,6 @@ class Chess
   def play_game
     until team_lost?
       @team = toggle_team(@team)
-      # puts "Total pieces lost: #{@pieces_lost.flatten}"
       puts_pieces_lost
       chess_board(@chess_pieces)
       @chess_pieces = move_piece
@@ -54,7 +51,7 @@ class Chess
 
   def puts_pieces_lost
     system 'clear'
-    puts "Casualties: #{@pieces_lost.join}"
+    puts "Casualties: #{@pieces_lost.join}\n"
   end
 
   def move_piece
@@ -62,6 +59,10 @@ class Chess
     puts 'enter the coordinates of the piece you would like to move'
     piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
 
+    # movement pattern should contain an array of possible moves
+    movement_pattern(piece_coordinates)
+
+    # p "array of possible moves:#{arr}"
     new_coordinates = new_piece_position
 
     update_position(new_coordinates, piece_coordinates, @chess_pieces)
@@ -80,7 +81,8 @@ class Chess
     puts 'enter the new coordinates'
     opposing_team = toggle_team(@team)
     coord = piece_position until valid_piece_move?(coord, opposing_team)
-    coord
+    # make sure the new square follows the pattern
+    # coord == movement_pattern(coord) ? coord : new_piece_position
   end
 
   # if moving to new can't move to the same place that has the same color
