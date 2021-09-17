@@ -39,13 +39,13 @@ class Chess
 
   # make sure white always goes first
   def play_game
-    until team_lost?
-      @team = toggle_team(@team)
-      puts_pieces_lost
-      chess_board(@chess_pieces)
-      @chess_pieces = move_piece
+    # until team_lost?
+    @team = toggle_team(@team)
+    puts_pieces_lost
+    chess_board(@chess_pieces)
+    @chess_pieces = move_piece
 
-    end
+    # end
     puts "Congratulations #{@team}, you won!"
   end
 
@@ -60,12 +60,111 @@ class Chess
     piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
 
     # movement pattern should contain an array of possible moves
-    movement_pattern(piece_coordinates)
+    move_arr = movement_pattern(piece_coordinates)
 
+    # trim the array to only include valid moves
+    remove_invalid_moves(move_arr, piece_coordinates)
+    # player can only select the moves that are valid
     # p "array of possible moves:#{arr}"
-    new_coordinates = new_piece_position
 
-    update_position(new_coordinates, piece_coordinates, @chess_pieces)
+    # this should just check if the new coord is in the move_arr
+    # new_coordinates = new_piece_position(options)
+
+    # update_position(new_coordinates, piece_coordinates, @chess_pieces)
+  end
+
+  def remove_invalid_moves(options_arr, coord)
+    # save the @chess_piece positions in its own array
+    board_pieces = make_board_piece_arr
+    p "board_pieces #{board_pieces}"
+    # trim down the arr until its pieces surrounding the original piece
+    trimmed_arr = trim_options(board_pieces, options_arr, coord)
+
+    # contain only those positions that are in the move_arr
+
+    # how do i make it stop if there's a piece in the way
+  end
+
+  # trim down the arr until its pieces surrounding the original piece
+  def trim_options(board_pieces, _options_arr, coord)
+    # find the pieces that are immediately surrounding the selected piece
+    surrounding_board_pieces = surrounding_pieces(board_pieces, coord)
+    # options_arr.each do |option|
+
+    # make a new array based on the options arr
+    # if there's a piece on board that is around it, remove all the options that come afterward
+    #
+  end
+
+  def surrounding_pieces(board_pieces, coord)
+    # surrounding = []
+    num = 1
+    x_direction = surrounding_pieces_horizontal(coord[1], board_pieces, num).compact!
+    p x_direction
+
+    # y-direction
+    num = 0
+    y_direction = surrounding_pieces_horizontal(coord[0], board_pieces, num).compact!
+    p y_direction
+    # surrounding
+
+    # there's two different kinds of diagonal
+    # z-direction
+    # the board renders in the opposite way you would think
+    z_direction = surrounding_pieces_diagonal_positive(coord, board_pieces).compact!
+    # should get nil from this
+    p z_direction
+  end
+
+  def surrounding_pieces_diagonal_positive(_coord, _board_pieces)
+    positive_direction = []
+    negative_direction = []
+    x = 0
+    y = 0
+
+    # start with the coord and keep changing the y and x until
+
+    # go through all the pieces
+    # board_pieces.each do |piece|
+    #   #y+1 and x +1
+    #   if [coord[0]+y, coord[1]+x] == piece
+    #     positive_direction.push(piece)
+    # x-1 and y+1
+    # if piece[0] > coord
+    #   positive_direction.push(piece)
+    # elsif piece[num] < coord
+    #   negative_direction.push(piece)
+    # end
+    # end
+    [positive_direction[0], negative_direction[0]].flatten
+  end
+
+  # four different functions for each diagonal direction
+  def diagonal_positive_xy; end
+
+  def surrounding_pieces_horizontal(coord, board_pieces, num)
+    positive_direction = []
+    negative_direction = []
+    board_pieces.each do |piece|
+      if piece[num] > coord
+        positive_direction.push(piece)
+      elsif piece[num] < coord
+        negative_direction.push(piece)
+      end
+    end
+    [positive_direction[0], negative_direction[0]].flatten
+  end
+
+  def make_board_piece_arr
+    board_pieces = []
+    @chess_pieces.each_pair do |_key, value|
+      value.each_pair do |property, data|
+        next unless property == 'square'
+
+        board_pieces.push(data)
+      end
+    end
+    board_pieces.flatten(1)
   end
 
   def toggle_team(team)

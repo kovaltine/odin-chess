@@ -18,6 +18,7 @@ WHITE_PIECES = {
   'pawn' => " \u265F"
 }.freeze
 
+# might need a counter for the pawns to track if it's their first move
 CHESS_PIECES = {
   'black_queen_rook' => {
     'code' => BLACK_PIECES.fetch('rook'),
@@ -202,6 +203,49 @@ module ChessPiece
     p piece_type # ex: "rook"
 
     # determine the pattern that it must follow
+    piece_move_arr(piece_type, coord)
+
+    # send it back to move_piece
+  end
+
+  def piece_move_arr(type, square)
+    case type
+    when 'rook'
+      rook_pattern(square)
+      # when 'knight'
+      #   knight_pattern
+      # when 'bishop'
+      #   bishop_pattern
+    end
+    # one for each piece type
+  end
+
+  def rook_pattern(start)
+    position = []
+    # start = 0
+    move_x = move_x_direction(position, start[0])
+    # combine the two arrays
+    move_y = move_y_direction(position, start[1])
+    position_arr = move_x.push(move_y)
+    p position_arr
+  end
+
+  def move_y_direction(position, x_coord)
+    y = 0
+    7.times do
+      position.push([y, x_coord])
+      y += 1
+    end
+    position
+  end
+
+  def move_x_direction(position, y_coord)
+    x = 0
+    7.times do
+      position.push([y_coord, x])
+      x += 1
+    end
+    position
   end
 
   def find_piece_type(piece_hash)
@@ -227,31 +271,4 @@ module ChessPiece
     end
     p 'invalid'
   end
-
-  # def find_piece_options(piece, position)
-  #   case piece
-  #   when 'rook'
-  #     # call a function to find out where it can go
-  #     movement = [[position[0], 0..7], [0..7, position[1]]]
-  #     piece_movement(movement, position)
-  #   when 'knight'
-  #     movement = [
-  #       [1, 2],
-  #       [-2, -1],
-  #       [-1, 2],
-  #       [2, -1],
-  #       [1, -2],
-  #       [-2, 1],
-  #       [-1, -2],
-  #       [2, 1]
-  #     ]
-  #     piece_movement(movement, position)
-  #   end
-  # end
-
-  # def piece_movement(movement, position)
-  #   # it can't go over top another piece
-  #   # it can't take on of its own pieces
-  #   # it can't go off the board
-  # end
 end
