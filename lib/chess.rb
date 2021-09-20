@@ -74,9 +74,8 @@ class Chess
   end
 
   def remove_invalid_moves(options_arr, coord)
-    # save the @chess_piece positions in its own array
     board_pieces = make_board_piece_arr
-    p "board_pieces #{board_pieces}"
+    # p "board_pieces #{board_pieces}"
     # trim down the arr until its pieces surrounding the original piece
     trimmed_arr = trim_options(board_pieces, options_arr, coord)
 
@@ -89,58 +88,70 @@ class Chess
   def trim_options(board_pieces, _options_arr, coord)
     # find the pieces that are immediately surrounding the selected piece
     surrounding_board_pieces = surrounding_pieces(board_pieces, coord)
-    # options_arr.each do |option|
+    puts "surrounding_board_pieces #{surrounding_board_pieces}"
 
+    # this won't work because it doesn't include options in more than one direction
+    # options_arr.each do |option|
+    #   trimmed_arr.push(option)
+    #   return trimmed_arr if surrounding_board_pieces.includes?(option)
+    # end
+    # only include coords up to but including that piece
+    # if the options_arr contains a surrounding board_piece, keep it as an option
     # make a new array based on the options arr
     # if there's a piece on board that is around it, remove all the options that come afterward
-    #
   end
 
   def surrounding_pieces(board_pieces, coord)
-    # surrounding = []
+    surrounding = []
     num = 1
     x_direction = surrounding_pieces_horizontal(coord[1], board_pieces, num).compact!
-    p x_direction
+
+    # somehow remove options that follow past the first horizontal piece
 
     # y-direction
     num = 0
     y_direction = surrounding_pieces_horizontal(coord[0], board_pieces, num).compact!
-    p y_direction
     # surrounding
 
     # there's two different kinds of diagonal
     # z-direction
     # the board renders in the opposite way you would think
-    z_direction = surrounding_pieces_diagonal_positive(coord, board_pieces).compact!
+    # a rook can't move diagonally
+    # z_direction = surrounding_pieces_diagonal(coord, board_pieces).compact!
     # should get nil from this
-    p z_direction
+    # p z_direction
+    surrounding.push([x_direction], [y_direction])
+    # surrounding.push()
+    # p surrounding
+    surrounding
   end
 
-  def surrounding_pieces_diagonal_positive(_coord, _board_pieces)
-    positive_direction = []
-    negative_direction = []
-    x = 0
-    y = 0
+  def surrounding_pieces_diagonal(coord, board_pieces)
+    positive_y_negative_x = diagonal_pattern([1, -1], coord, board_pieces)
+    positive_y_positive_x = diagonal_pattern([1, 1], coord, board_pieces)
+    negative_y_positive_x = diagonal_pattern([-1, 1], coord, board_pieces)
+    negative_y_negative_x = diagonal_pattern([-1, -1], coord, board_pieces)
 
-    # start with the coord and keep changing the y and x until
-
-    # go through all the pieces
-    # board_pieces.each do |piece|
-    #   #y+1 and x +1
-    #   if [coord[0]+y, coord[1]+x] == piece
-    #     positive_direction.push(piece)
-    # x-1 and y+1
-    # if piece[0] > coord
-    #   positive_direction.push(piece)
-    # elsif piece[num] < coord
-    #   negative_direction.push(piece)
-    # end
-    # end
-    [positive_direction[0], negative_direction[0]].flatten
+    # put all these arrs into one
+    p [positive_y_negative_x, positive_y_positive_x, negative_y_negative_x, negative_y_positive_x].flatten(1)
+    [positive_y_negative_x, positive_y_positive_x, negative_y_negative_x, negative_y_positive_x].flatten(1)
+    # [positive_direction[0], negative_direction[0]].flatten
   end
 
   # four different functions for each diagonal direction
-  def diagonal_positive_xy; end
+  # just one, and hard code the positive or negative change
+  def diagonal_pattern(pattern, start, board_pieces)
+    # following the pattern, if the calculated coord matches a board_piece then return the arr including a board_piece coord
+    # make sure the arr is within range of the board
+    pieces_diagonal = []
+    new_coord = start
+    while new_coord[0].between?(0, 7) && new_coord[1].between?(0, 7)
+      new_coord[0] += pattern[0]
+      new_coord[1] += pattern[1]
+      pieces_diagonal.push(new_coord)
+      return pieces_diagonal if board_pieces.include?(new_coord)
+    end
+  end
 
   def surrounding_pieces_horizontal(coord, board_pieces, num)
     positive_direction = []
