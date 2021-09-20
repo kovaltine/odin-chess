@@ -67,9 +67,6 @@ class Chess
     # player can only select the moves that are valid
     # p "array of possible moves:#{arr}"
 
-    # this should just check if the new coord is in the move_arr
-    # new_coordinates = new_piece_position(options)
-
     # update_position(new_coordinates, piece_coordinates, @chess_pieces)
   end
 
@@ -85,11 +82,16 @@ class Chess
   end
 
   # trim down the arr until its pieces surrounding the original piece
-  def trim_options(board_pieces, _options_arr, coord)
+  def trim_options(board_pieces, options_arr, coord)
     # find the pieces that are immediately surrounding the selected piece
-    surrounding_board_pieces = surrounding_pieces(board_pieces, coord)
-    puts "surrounding_board_pieces #{surrounding_board_pieces}"
+    # surrounding_board_pieces = surrounding_pieces(board_pieces, coord)
+    # puts "surrounding_board_pieces #{surrounding_board_pieces}"
+    positive_horizontal_options = positive_horizontal_surrounding_pieces(board_pieces, options_arr, coord)
+    p positive_horizontal_options
 
+    negative_horizontal_options = negative_horizontal_surrounding_pieces(board_pieces, options_arr, coord)
+
+    p negative_horizontal_options
     # this won't work because it doesn't include options in more than one direction
     # options_arr.each do |option|
     #   trimmed_arr.push(option)
@@ -103,14 +105,13 @@ class Chess
 
   def surrounding_pieces(board_pieces, coord)
     surrounding = []
-    num = 1
-    x_direction = surrounding_pieces_horizontal(coord[1], board_pieces, num).compact!
+    x_direction = surrounding_pieces_horizontal(coord, board_pieces).compact!
 
     # somehow remove options that follow past the first horizontal piece
 
     # y-direction
-    num = 0
-    y_direction = surrounding_pieces_horizontal(coord[0], board_pieces, num).compact!
+    # num = 0
+    # y_direction = surrounding_pieces_horizontal(coord[0], board_pieces, num).compact!
     # surrounding
 
     # there's two different kinds of diagonal
@@ -123,6 +124,8 @@ class Chess
     surrounding.push([x_direction], [y_direction])
     # surrounding.push()
     # p surrounding
+
+    # should get [6, 0] and [7,1]
     surrounding
   end
 
@@ -153,17 +156,67 @@ class Chess
     end
   end
 
-  def surrounding_pieces_horizontal(coord, board_pieces, num)
-    positive_direction = []
-    negative_direction = []
-    board_pieces.each do |piece|
-      if piece[num] > coord
-        positive_direction.push(piece)
-      elsif piece[num] < coord
-        negative_direction.push(piece)
-      end
-    end
+  def surrounding_pieces_horizontal(coord, board_pieces)
+    positive_direction = negative_horizontal_surrounding_pieces(coord, board_pieces)
+    negative_direction = positive_horizontal_surrounding_pieces(coord, board_pieces)
+
+    # take the current coord and move horizontally
+    # two different functions for positive and negative
+
+    # board_pieces.each do |piece|
+    #   if piece[num] >= coord
+    #     positive_direction.push(piece)
+    #   elsif piece[num] <= coord
+    #     negative_direction.push(piece)
+    #   end
+    # end
     [positive_direction[0], negative_direction[0]].flatten
+  end
+
+  # fix index
+  def negative_horizontal_surrounding_pieces(board_pieces, options, coord)
+    same_y_num = []
+    options.each do |option|
+      same_y_num.push(option) if option[0] == coord[0]
+    end
+
+    on_the_board = []
+    same_y_num.each do |nums|
+      on_the_board.push(nums) if board_pieces.include?(nums)
+    end
+
+    nearest_piece = []
+    index = -1
+    while index >= -7
+      on_the_board.each do |near|
+        nearest_piece.push(near) if near == [coord[0], coord[1] + index]
+      end
+      index -= 1
+    end
+    p nearest_piece
+    nearest_piece.flatten
+  end
+
+  def positive_horizontal_surrounding_pieces(board_pieces, options, coord)
+    same_y_num = []
+    options.each do |option|
+      same_y_num.push(option) if option[0] == coord[0]
+    end
+
+    on_the_board = []
+    same_y_num.each do |nums|
+      on_the_board.push(nums) if board_pieces.include?(nums)
+    end
+
+    nearest_piece = []
+    while nearest_piece.empty?
+      index = 1
+      on_the_board.each do |near|
+        nearest_piece.push(near) if near == [coord[0], coord[1] + index]
+      end
+      index += 1
+    end
+    nearest_piece.flatten
   end
 
   def make_board_piece_arr

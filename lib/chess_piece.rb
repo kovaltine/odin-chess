@@ -196,7 +196,7 @@ module ChessPiece
     p coord
     # find the piece with the matching coordinates
     piece_hash = find_piece_hash(coord)
-    p piece_hash # ex:  {\"code\"=>\" ♜\", \"square\"=>[[7, 0]], \"color\"=>\"white\"}"
+    # p piece_hash # ex:  {\"code\"=>\" ♜\", \"square\"=>[[7, 0]], \"color\"=>\"white\"}"
 
     # find the type of piece
     piece_type = find_piece_type(piece_hash)
@@ -212,12 +212,12 @@ module ChessPiece
     case type
     when 'rook'
       rook_pattern(square)
+      # one for each piece type
       # when 'knight'
       #   knight_pattern
       # when 'bishop'
       #   bishop_pattern
     end
-    # one for each piece type
   end
 
   def rook_pattern(start)
@@ -227,7 +227,6 @@ module ChessPiece
     # combine the two arrays
     move_y = move_y_direction(position, start[1])
     position_arr = move_x.push(move_y)
-    p position_arr
   end
 
   def move_y_direction(position, x_coord)
