@@ -192,7 +192,6 @@ module ChessPiece
 
   # when a piece is selected it will match the piece with the movement pattern
   def movement_pattern(coord)
-    puts 'movement_pattern'
     p coord
     # find the piece with the matching coordinates
     piece_hash = find_piece_hash(coord)
@@ -226,7 +225,7 @@ module ChessPiece
     move_x = move_x_direction(position, start[0])
     # combine the two arrays
     move_y = move_y_direction(position, start[1])
-    position_arr = move_x.push(move_y)
+    move_x.push(move_y)
   end
 
   def move_y_direction(position, x_coord)

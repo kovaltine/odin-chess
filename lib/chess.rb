@@ -2,11 +2,13 @@
 
 require_relative './board'
 require_relative './chess_piece'
+require_relative './surrounding_piece'
 
 # plays the chess game
 class Chess
   include Board
   include ChessPiece
+  include SurroundingPiece
 
   def initialize
     @chess_pieces = start_chess_pieces
@@ -70,157 +72,16 @@ class Chess
     # update_position(new_coordinates, piece_coordinates, @chess_pieces)
   end
 
-  def remove_invalid_moves(options_arr, coord)
+  def remove_invalid_moves(_options_arr, coord)
     board_pieces = make_board_piece_arr
     # p "board_pieces #{board_pieces}"
     # trim down the arr until its pieces surrounding the original piece
-    surrounding_pieces = surrounding_pieces(board_pieces, options_arr, coord)
-    p surrounding_pieces
+    surrounding_pieces = surrounding_pieces(board_pieces, coord)
+    p "remove_invalid_moves: #{surrounding_pieces}"
 
     # contain only those positions that are in the move_arr
 
     # how do i make it stop if there's a piece in the way
-  end
-
-  # trim down the arr until its pieces surrounding the original piece
-  def surrounding_pieces(board_pieces, options_arr, coord)
-    # find the pieces that are immediately surrounding the selected piece
-    surrounding = positive_horizontal_surrounding_piece(board_pieces, options_arr, coord)
-    surrounding.push(negative_horizontal_surrounding_piece(board_pieces, options_arr, coord))
-    surrounding.push(positive_vertical_surrounding_piece(board_pieces, options_arr, coord))
-    surrounding.push(negative_vertical_surrounding_piece(board_pieces, options_arr, coord))
-    surrounding.compact!
-  end
-
-  def surrounding_pieces_diagonal(coord, board_pieces)
-    positive_y_negative_x = diagonal_pattern([1, -1], coord, board_pieces)
-    positive_y_positive_x = diagonal_pattern([1, 1], coord, board_pieces)
-    negative_y_positive_x = diagonal_pattern([-1, 1], coord, board_pieces)
-    negative_y_negative_x = diagonal_pattern([-1, -1], coord, board_pieces)
-
-    # put all these arrs into one
-    p [positive_y_negative_x, positive_y_positive_x, negative_y_negative_x, negative_y_positive_x].flatten(1)
-    [positive_y_negative_x, positive_y_positive_x, negative_y_negative_x, negative_y_positive_x].flatten(1)
-    # [positive_direction[0], negative_direction[0]].flatten
-  end
-
-  # four different functions for each diagonal direction
-  # just one, and hard code the positive or negative change
-  def diagonal_pattern(pattern, start, board_pieces)
-    # following the pattern, if the calculated coord matches a board_piece then return the arr including a board_piece coord
-    # make sure the arr is within range of the board
-    pieces_diagonal = []
-    new_coord = start
-    while new_coord[0].between?(0, 7) && new_coord[1].between?(0, 7)
-      new_coord[0] += pattern[0]
-      new_coord[1] += pattern[1]
-      pieces_diagonal.push(new_coord)
-      return pieces_diagonal if board_pieces.include?(new_coord)
-    end
-  end
-
-  def surrounding_pieces_horizontal(coord, board_pieces)
-    positive_direction = negative_horizontal_surrounding_pieces(coord, board_pieces)
-    negative_direction = positive_horizontal_surrounding_pieces(coord, board_pieces)
-
-    # take the current coord and move horizontally
-    # two different functions for positive and negative
-
-    # board_pieces.each do |piece|
-    #   if piece[num] >= coord
-    #     positive_direction.push(piece)
-    #   elsif piece[num] <= coord
-    #     negative_direction.push(piece)
-    #   end
-    # end
-    [positive_direction[0], negative_direction[0]].flatten
-  end
-
-  # x-coordinate is the same, it's the second number
-  def negative_vertical_surrounding_piece(board_pieces, options, coord)
-    same_x_num = []
-    options.each do |option|
-      same_x_num.push(option) if option[1] == coord[1]
-    end
-
-    on_the_board = []
-    same_x_num.each do |nums|
-      on_the_board.push(nums) if board_pieces.include?(nums)
-    end
-
-    index = 1
-    while index <= 7
-      on_the_board.each do |near|
-        return near if near == [(coord[0] + index), coord[1]]
-      end
-      index += 1
-    end
-  end
-
-  # x-coordinate is the same, it's the second number
-  def positive_vertical_surrounding_piece(board_pieces, options, coord)
-    same_x_num = []
-    options.each do |option|
-      same_x_num.push(option) if option[1] == coord[1]
-    end
-
-    on_the_board = []
-    same_x_num.each do |nums|
-      on_the_board.push(nums) if board_pieces.include?(nums)
-    end
-
-    index = -1
-    while index >= -7
-      on_the_board.each do |near|
-        return near if near == [(coord[0] + index), coord[1]]
-      end
-      index -= 1
-    end
-  end
-
-  def negative_horizontal_surrounding_piece(board_pieces, options, coord)
-    same_y_num = []
-    options.each do |option|
-      same_y_num.push(option) if option[0] == coord[0]
-    end
-
-    on_the_board = []
-    same_y_num.each do |nums|
-      on_the_board.push(nums) if board_pieces.include?(nums)
-    end
-
-    index = -1
-    while index >= -7
-      on_the_board.each do |near|
-        return near if near == [coord[0], coord[1] + index]
-      end
-      index -= 1
-    end
-  end
-
-  def positive_horizontal_surrounding_piece(board_pieces, options, coord)
-    same_y_num = []
-    options.each do |option|
-      same_y_num.push(option) if option[0] == coord[0]
-    end
-
-    on_the_board = []
-    same_y_num.each do |nums|
-      on_the_board.push(nums) if board_pieces.include?(nums)
-    end
-
-    nearest_piece = []
-    index = 1
-    while index <= 7
-      on_the_board.each do |near|
-        if near == [coord[0], coord[1] + index]
-          nearest_piece.push(near)
-          return nearest_piece
-        end
-      end
-      index += 1
-    end
-    nearest_piece
   end
 
   def make_board_piece_arr
