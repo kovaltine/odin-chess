@@ -61,27 +61,26 @@ class Chess
     puts 'enter the coordinates of the piece you would like to move'
     piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
 
+    # find surrounding chess board pieces
+    surrounding_pieces = surrounding_board_pieces(piece_coordinates)
+
     # movement pattern should contain an array of possible moves
-    move_arr = movement_pattern(piece_coordinates)
+    # maybe movement pattern should generate different arrays for the different axis
+    move_arr = movement_pattern(piece_coordinates, surrounding_pieces)
+    p "move_arr: #{move_arr}"
 
-    # trim the array to only include valid moves
-    remove_invalid_moves(move_arr, piece_coordinates)
-    # player can only select the moves that are valid
-    # p "array of possible moves:#{arr}"
-
+    # only include those that are in the options array
+    # move_options = move_options(surrounding_pieces, move_arr)
+    # p "\nmove_options: #{move_options}"
     # update_position(new_coordinates, piece_coordinates, @chess_pieces)
   end
 
-  def remove_invalid_moves(_options_arr, coord)
+  # find the surrounding chess pieces
+  def surrounding_board_pieces(coord)
+    # make an array of all the pieces on the board
     board_pieces = make_board_piece_arr
-    # p "board_pieces #{board_pieces}"
-    # trim down the arr until its pieces surrounding the original piece
-    surrounding_pieces = surrounding_pieces(board_pieces, coord)
-    p "remove_invalid_moves: #{surrounding_pieces}"
-
-    # contain only those positions that are in the move_arr
-
-    # how do i make it stop if there's a piece in the way
+    # find the surrounding chess pieces
+    surrounding_pieces(board_pieces, coord)
   end
 
   def make_board_piece_arr

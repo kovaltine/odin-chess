@@ -4,11 +4,8 @@
 module SurroundingPiece
   # make an arr of the surrounding pieces
   def surrounding_pieces(board_pieces, coord)
-    # find the pieces that are immediately surrounding the selected piece
     surrounding = []
-    # why doesn't this flatten?
     surrounding.push(positive_horizontal_surrounding_piece(board_pieces, coord))
-    # surrounding.flatten(1)
     surrounding.push(negative_horizontal_surrounding_piece(board_pieces, coord))
     surrounding.push(positive_vertical_surrounding_piece(board_pieces, coord))
     surrounding.push(negative_vertical_surrounding_piece(board_pieces, coord))
@@ -16,6 +13,7 @@ module SurroundingPiece
     diagonal = surrounding_pieces_diagonal(coord, board_pieces).compact!
     surrounding.push(diagonal)
     surrounding.compact!
+    p surrounding
   end
 
   # the way the board renders makes everything confusing
@@ -29,13 +27,12 @@ module SurroundingPiece
   end
 
   def diagonal_axis_piece(pattern, coord, board_pieces)
-    new_coord = coord
+    new_coord = [coord[0], coord[1]]
     new_coord[0] += pattern[0]
     new_coord[1] += pattern[1]
     while new_coord[0].between?(0, 7) && new_coord[1].between?(0, 7)
-      # look through the whole array
       board_pieces.each do |piece|
-        return piece if [new_coord[0], new_coord[1]] == piece
+        return piece if !(piece == coord) && ([new_coord[0], new_coord[1]] == piece)
       end
       new_coord[0] += pattern[0]
       new_coord[1] += pattern[1]

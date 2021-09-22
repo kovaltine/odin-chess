@@ -191,12 +191,9 @@ module ChessPiece
   end
 
   # when a piece is selected it will match the piece with the movement pattern
-  def movement_pattern(coord)
-    p coord
-    # find the piece with the matching coordinates
+  def movement_pattern(coord, surrounding)
+    @surrounding = surrounding
     piece_hash = find_piece_hash(coord)
-    # p piece_hash # ex:  {\"code\"=>\" ♜\", \"square\"=>[[7, 0]], \"color\"=>\"white\"}"
-
     # find the type of piece
     piece_type = find_piece_type(piece_hash)
     p piece_type # ex: "rook"
@@ -220,21 +217,24 @@ module ChessPiece
   end
 
   def rook_pattern(start)
+    @start = start
     position = []
     # start = 0
     move_x = move_x_direction(position, start[0])
     # combine the two arrays
     move_y = move_y_direction(position, start[1])
-    move_x.push(move_y)
+    p move_x
+    p move_y
   end
 
+  # this is where i should start next
   def move_y_direction(position, x_coord)
     y = 0
     7.times do
-      position.push([y, x_coord])
+      position.push([y, x_coord]) unless [y, x_coord] == @start
       y += 1
     end
-    position
+    p limit_axis_options(position)
   end
 
   def move_x_direction(position, y_coord)
@@ -243,7 +243,15 @@ module ChessPiece
       position.push([y_coord, x])
       x += 1
     end
-    position
+    p limit_axis_options(position)
+  end
+
+  def limit_axis_options(arr)
+    options = []
+    arr.each do |option|
+      options.push(option)
+      return options.flatten(1) if @surrounding.include?(option)
+    end
   end
 
   def find_piece_type(piece_hash)
