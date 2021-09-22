@@ -7,7 +7,8 @@ module SurroundingPiece
     # find the pieces that are immediately surrounding the selected piece
     surrounding = []
     # why doesn't this flatten?
-    surrounding.push(positive_horizontal_surrounding_piece(board_pieces, coord)).flatten
+    surrounding.push(positive_horizontal_surrounding_piece(board_pieces, coord))
+    # surrounding.flatten(1)
     surrounding.push(negative_horizontal_surrounding_piece(board_pieces, coord))
     surrounding.push(positive_vertical_surrounding_piece(board_pieces, coord))
     surrounding.push(negative_vertical_surrounding_piece(board_pieces, coord))
@@ -97,7 +98,7 @@ module SurroundingPiece
     index = 1
     while index <= 7
       on_the_axis.each do |near|
-        return [near] if near == [coord[0], coord[1] + index]
+        return near if near == [coord[0], coord[1] + index]
       end
       index += 1
     end
