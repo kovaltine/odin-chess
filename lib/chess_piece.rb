@@ -207,7 +207,7 @@ module ChessPiece
   def piece_move_arr(type, square)
     case type
     when 'rook'
-      rook_pattern(square)
+      p rook_pattern(square)
       # one for each piece type
       # when 'knight'
       #   knight_pattern
@@ -218,39 +218,35 @@ module ChessPiece
 
   def rook_pattern(start)
     @start = start
-    position = []
-    # start = 0
-    move_x = move_x_direction(position, start[0])
-    # combine the two arrays
-    move_y = move_y_direction(position, start[1])
-    p move_x
-    p move_y
+    move_x = move_x_direction(start[0])
+    move_y = move_y_direction(start[1])
+    [move_x, move_y]
   end
 
   # this is where i should start next
-  def move_y_direction(position, x_coord)
+  def move_y_direction(x_coord)
+    positions = []
     y = 0
     7.times do
-      position.push([y, x_coord]) unless [y, x_coord] == @start
+      positions.push([y, x_coord]) unless [y, x_coord] == @start
       y += 1
     end
-    p limit_axis_options(position)
+    limit_axis_options(positions)
   end
 
-  def move_x_direction(position, y_coord)
+  def move_x_direction(y_coord)
+    positions = []
     x = 0
     7.times do
-      position.push([y_coord, x])
+      positions.push([y_coord, x]) unless [y_coord, x] == @start
       x += 1
     end
-    p limit_axis_options(position)
+    limit_axis_options(positions)
   end
 
   def limit_axis_options(arr)
-    options = []
     arr.each do |option|
-      options.push(option)
-      return options.flatten(1) if @surrounding.include?(option)
+      return option if @surrounding.include?(option)
     end
   end
 
