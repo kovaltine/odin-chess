@@ -207,46 +207,82 @@ module ChessPiece
   def piece_move_arr(type, square)
     case type
     when 'rook'
-      p rook_pattern(square)
+      rook_pattern(square)
+    when 'pawn'
+      pawn_pattern(square)
       # one for each piece type
       # when 'knight'
       #   knight_pattern
-      # when 'bishop'
-      #   bishop_pattern
+    # when 'bishop'
+    #   bishop_pattern
     end
+  end
+
+  def pawn_pattern(start)
+    
   end
 
   def rook_pattern(start)
     @start = start
-    move_x = move_x_direction(start[0])
-    move_y = move_y_direction(start[1])
-    [move_x, move_y]
+    move_positive_y = move_positive_y_direction
+    move_negative_y = move_negative_y_direction
+    move_positive_x = move_positive_x_direction
+    move_negative_x = move_negative_x_direction
+    [move_positive_y, move_negative_y, move_positive_x, move_negative_x].flatten(1)
   end
 
   # this is where i should start next
-  def move_y_direction(x_coord)
+  def move_positive_y_direction
     positions = []
-    y = 0
-    7.times do
-      positions.push([y, x_coord]) unless [y, x_coord] == @start
+    # can't hardcode 0, it has to be on the axis nearest to the piece
+    y = @start[0]
+    y -= 1
+    while y <= 7 && y >= 0
+      positions.push([y, @start[1]]) unless [y, @start[1]] == @start
+      y -= 1
+    end
+    limit_axis_options(positions)
+  end
+
+  def move_negative_y_direction
+    positions = []
+    # can't hardcode 0, it has to be on the axis nearest to the piece
+    y = @start[0]
+    y += 1
+    while y <= 7 && y >= 0
+      positions.push([y, @start[1]]) unless [y, @start[1]] == @start
       y += 1
     end
     limit_axis_options(positions)
   end
 
-  def move_x_direction(y_coord)
+  def move_positive_x_direction
     positions = []
-    x = 0
-    7.times do
-      positions.push([y_coord, x]) unless [y_coord, x] == @start
+    x = @start[1]
+    x += 1
+    while x <= 7 && x >= 0
+      positions.push([@start[0], x]) unless [@start[0], x] == @start
       x += 1
     end
     limit_axis_options(positions)
   end
 
+  def move_negative_x_direction
+    positions = []
+    x = @start[1]
+    x -= 1
+    while x <= 7 && x >= 0
+      positions.push([@start[0], x]) unless [@start[0], x] == @start
+      x -= 1
+    end
+    limit_axis_options(positions)
+  end
+
   def limit_axis_options(arr)
+    options = []
     arr.each do |option|
-      return option if @surrounding.include?(option)
+      options.push(option)
+      return options if @surrounding.include?(option)
     end
   end
 

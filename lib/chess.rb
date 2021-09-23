@@ -60,26 +60,15 @@ class Chess
     puts "#{@team}'s move"
     puts 'enter the coordinates of the piece you would like to move'
     piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
-
-    # find surrounding chess board pieces
     surrounding_pieces = surrounding_board_pieces(piece_coordinates)
-
-    # movement pattern should contain an array of possible moves
-    # maybe movement pattern should generate different arrays for the different axis
     move_arr = movement_pattern(piece_coordinates, surrounding_pieces)
-    p "move_arr: #{move_arr}"
-
-    # only include those that are in the options array
-    # move_options = move_options(surrounding_pieces, move_arr)
-    # p "\nmove_options: #{move_options}"
-    # update_position(new_coordinates, piece_coordinates, @chess_pieces)
+    check_piece_options(move_arr) ? new_piece_position : move_piece
+    update_position(new_coordinates, piece_coordinates, @chess_pieces)
   end
 
   # find the surrounding chess pieces
   def surrounding_board_pieces(coord)
-    # make an array of all the pieces on the board
     board_pieces = make_board_piece_arr
-    # find the surrounding chess pieces
     surrounding_pieces(board_pieces, coord)
   end
 
@@ -104,12 +93,19 @@ class Chess
     end
   end
 
+  def check_piece_options(move_arr)
+    opposing_team = toggle_team(@team)
+    move_arr.each do |option|
+      return true if valid_piece_move?(option, opposing_team)
+    end
+    p 'cannot move this piece'
+    false
+  end
+
   def new_piece_position
     puts 'enter the new coordinates'
     opposing_team = toggle_team(@team)
     coord = piece_position until valid_piece_move?(coord, opposing_team)
-    # make sure the new square follows the pattern
-    # coord == movement_pattern(coord) ? coord : new_piece_position
   end
 
   # if moving to new can't move to the same place that has the same color
