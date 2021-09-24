@@ -10,10 +10,8 @@ module SurroundingPiece
     surrounding.push(positive_vertical_surrounding_piece(board_pieces, coord))
     surrounding.push(negative_vertical_surrounding_piece(board_pieces, coord))
 
-    diagonal = surrounding_pieces_diagonal(coord, board_pieces).compact!
-    surrounding.push(diagonal)
-    surrounding.compact!
-    p "surrounding pieces: #{surrounding}"
+    @nearby_pieces = surrounding
+    surrounding_pieces_diagonal(coord, board_pieces).compact!.uniq!
   end
 
   # the way the board renders makes everything confusing
@@ -32,11 +30,12 @@ module SurroundingPiece
     new_coord[1] += pattern[1]
     while new_coord[0].between?(0, 7) && new_coord[1].between?(0, 7)
       board_pieces.each do |piece|
-        return piece if !(piece == coord) && ([new_coord[0], new_coord[1]] == piece)
+        return @nearby_pieces.push(piece) if !(piece == coord) && ([new_coord[0], new_coord[1]] == piece)
       end
       new_coord[0] += pattern[0]
       new_coord[1] += pattern[1]
     end
+    @nearby_pieces
   end
 
   # x-coordinate is the same, it's the second number

@@ -61,6 +61,7 @@ class Chess
     puts 'enter the coordinates of the piece you would like to move'
     piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
     surrounding_pieces = surrounding_board_pieces(piece_coordinates)
+    p "surrounding pieces #{surrounding_pieces}"
     move_arr = movement_pattern(piece_coordinates, surrounding_pieces)
     check_piece_options(move_arr) ? new_piece_position : move_piece
     update_position(new_coordinates, piece_coordinates, @chess_pieces)
@@ -93,6 +94,8 @@ class Chess
     end
   end
 
+  # right now the pawn can take a piece if there's an opponent right in front of them
+  # if one of the opposing pieces is in a diagonal slot, then it can move there
   def check_piece_options(move_arr)
     return false if move_arr.nil?
 
@@ -114,6 +117,8 @@ class Chess
   # if selecting a piece must be one that's on your team
   def valid_piece_move?(coordinates, team = @team)
     return false if coordinates.nil?
+
+    # if find_piece_hash(coordinates).fetch('')
 
     @chess_pieces.each_pair do |_key, value|
       return true if value['color'] == team && value['square'] == [coordinates]
