@@ -94,6 +94,8 @@ class Chess
   end
 
   def check_piece_options(move_arr)
+    return false if move_arr.nil?
+
     opposing_team = toggle_team(@team)
     move_arr.each do |option|
       return true if valid_piece_move?(option, opposing_team)

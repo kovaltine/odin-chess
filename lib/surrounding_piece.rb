@@ -13,7 +13,7 @@ module SurroundingPiece
     diagonal = surrounding_pieces_diagonal(coord, board_pieces).compact!
     surrounding.push(diagonal)
     surrounding.compact!
-    p surrounding
+    p "surrounding pieces: #{surrounding}"
   end
 
   # the way the board renders makes everything confusing
