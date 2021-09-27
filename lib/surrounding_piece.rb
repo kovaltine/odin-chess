@@ -11,7 +11,7 @@ module SurroundingPiece
     surrounding.push(negative_vertical_surrounding_piece(board_pieces, coord))
 
     @nearby_pieces = surrounding
-    surrounding_pieces_diagonal(coord, board_pieces).compact!.uniq!
+    surrounding_pieces_diagonal(coord, board_pieces).compact!
   end
 
   # board renders bottom up, not top down
@@ -21,7 +21,11 @@ module SurroundingPiece
     diagonal_pieces.push(diagonal_axis_piece([1, 1], coord, board_pieces))
     diagonal_pieces.push(diagonal_axis_piece([-1, 1], coord, board_pieces))
     diagonal_pieces.push(diagonal_axis_piece([-1, -1], coord, board_pieces))
-    diagonal_pieces.flatten(1)
+    if diagonal_pieces.flatten(1).uniq!.nil?
+      diagonal_pieces.flatten(1)
+    else
+      diagonal_pieces.flatten(1).uniq!
+    end
   end
 
   def diagonal_axis_piece(pattern, coord, board_pieces)

@@ -42,12 +42,10 @@ class Chess
   # make sure white always goes first
   def play_game
     until team_lost?
-      p 'play chess'
       @team = toggle_team(@team)
       puts_pieces_lost
       chess_board(@chess_pieces)
       @chess_pieces = move_piece
-      p @chess_pieces
     end
     puts "Congratulations #{@team}, you won!"
   end
@@ -61,10 +59,11 @@ class Chess
     puts "#{@team}'s move"
     puts 'enter the coordinates of the piece you would like to move'
     piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
+    p piece_coordinates
     surrounding_pieces = surrounding_board_pieces(piece_coordinates)
-    p "surrounding pieces #{surrounding_pieces}"
 
     move_arr = movement_pattern(piece_coordinates, surrounding_pieces)
+
     check_piece_options(move_arr) ? new_piece_position(piece_coordinates) : move_piece
   end
 
@@ -154,8 +153,6 @@ class Chess
 
         piece_key.push(value['code'])
         position.replace([new_coord])
-        # update move if it's a pawn
-        value['move'] += 1 if value['code'] == BLACK_PIECES.fetch('pawn') || WHITE_PIECES.fetch('pawn')
       end
     end
     remove_piece(new_coord, piece_key, board_pieces)
@@ -173,7 +170,6 @@ class Chess
         board_pieces.delete(key)
       end
     end
-    p board_pieces
     board_pieces
   end
 end

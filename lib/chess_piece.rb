@@ -1,5 +1,7 @@
 # frozen_string_literal:true
 
+# require_relative './chess'
+
 BLACK_PIECES = {
   'rook' => " \u2656",
   'knight' => " \u2658",
@@ -201,8 +203,12 @@ CHESS_PIECES = {
   }
 }
 
+# refactoring ideas: assign each piece type to an object
+
 # input the hash key, make decisions based on the piece type
 module ChessPiece
+  # include Chess
+
   def start_chess_pieces
     CHESS_PIECES
   end
@@ -220,19 +226,59 @@ module ChessPiece
     # send it back to move_piece
   end
 
+  # get the arr of potential moves
   def piece_move_arr(type, square)
     @start = square
+    @type = type
     case type
     when 'rook'
+      p rook_pattern
       rook_pattern
     when 'pawn'
+      @chess_pieces = add_one
+      p pawn_pattern.compact!
       pawn_pattern
+    when 'knight'
+      p knight_pattern
+      knight_pattern
       # one for each piece type
       # when 'knight'
       #   knight_pattern
       # when 'bishop'
       #   bishop_pattern
     end
+  end
+
+  def add_one
+    @chess_pieces.each_pair do |_key, value|
+      value.each_value do |data|
+        next unless data == [@start]
+
+        next unless [value['code']] == @type
+
+        value['move'] += 1
+      end
+    end
+  end
+
+  ## Pattern for the Knights ##
+  def knight_pattern
+    # at most 8 possibilities
+    knight_coords = []
+    patterns = [[-2, 1], [-2, -1], [-1, 2], [-1, -2], [2, -1], [2, 1], [1, -2], [1, 2]]
+    patterns.each do |pattern|
+      knight_coords.push([pattern[0] + @start[0], pattern[1] + @start[1]])
+    end
+    valid_knight_position(knight_coords)
+  end
+
+  # make sure the knight positions are on the board
+  def valid_knight_position(coords)
+    valid_knight = []
+    coords.each do |coord|
+      valid_knight.push(coord) if coord[0].between?(0, 7) && coord[1].between?(0, 7)
+    end
+    valid_knight
   end
 
   ## Pattern for the Pawns ##
@@ -243,7 +289,6 @@ module ChessPiece
     attack = move_diagonal_one_square
     pawn_moves = limit_axis_options_pawn(moves)
     pawn_moves.push(check_pawn_attack(attack))
-    p pawn_moves
     pawn_moves
   end
 
@@ -257,9 +302,10 @@ module ChessPiece
 
   # cannot move forward if there is a piece right in front
   def limit_axis_options_pawn(moves)
+    return moves if @surrounding.nil?
+
     options = []
     moves.each do |option|
-      p "limit_axis_options_pawn #{option}"
       return options if @surrounding.include?(option)
 
       options.push(option)
@@ -276,11 +322,12 @@ module ChessPiece
       diagonal.push(find_diagonal_match([+1, -1], square)).flatten(1)
       diagonal.push(find_diagonal_match([+1, +1], square)).flatten(1)
     end
-    p "diagonal: #{diagonal}"
     diagonal
   end
 
   def find_diagonal_match(pattern, square)
+    return nil if @surrounding.nil?
+
     @surrounding.each do |option|
       return option if option == [square[0] + pattern[0], square[1] + pattern[1]]
     end
