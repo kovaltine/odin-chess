@@ -235,22 +235,76 @@ module ChessPiece
     end
   end
 
+  ## Pattern for the Pawns ##
   def pawn_pattern
     moves = []
     moves.push(move_vertical_two_squares) if @piece_hash.fetch_values('move') == [0]
     moves.push(move_vertical_one_square)
-    move_diagonal_one_square(moves)
+    attack = move_diagonal_one_square
+    pawn_moves = limit_axis_options_pawn(moves)
+    pawn_moves.push(check_pawn_attack(attack))
+    p pawn_moves
+    pawn_moves
   end
 
-  def move_diagonal_one_square(moves)
-    case @piece_hash.fetch('color')
-    when 'white'
-      square = @piece_hash.fetch('square').flatten(1)
-      moves.push([square[0] - 1, square[1] - 1], [square[0] - 1, square[1] + 1])
-    when 'black'
-      square = @piece_hash.fetch('square').flatten(1)
-      moves.push([square[0] + 1, square[1] - 1], [square[0] + 1, square[1] + 1])
+  def check_pawn_attack(attack)
+    options = []
+    attack.each do |option|
+      options.push(option) if @surrounding.include?(option)
     end
+    options
+  end
+
+  # cannot move forward if there is a piece right in front
+  def limit_axis_options_pawn(moves)
+    options = []
+    moves.each do |option|
+      p "limit_axis_options_pawn #{option}"
+      return options if @surrounding.include?(option)
+
+      options.push(option)
+    end
+  end
+
+  def check_surrounding_for_diagonal(color, square)
+    diagonal = []
+    case color
+    when 'white'
+      diagonal.push(find_diagonal_match([-1, -1], square)).flatten(1)
+      diagonal.push(find_diagonal_match([-1, +1], square)).flatten(1)
+    when 'black'
+      diagonal.push(find_diagonal_match([+1, -1], square)).flatten(1)
+      diagonal.push(find_diagonal_match([+1, +1], square)).flatten(1)
+    end
+    p "diagonal: #{diagonal}"
+    diagonal
+  end
+
+  def find_diagonal_match(pattern, square)
+    @surrounding.each do |option|
+      return option if option == [square[0] + pattern[0], square[1] + pattern[1]]
+    end
+    nil
+  end
+
+  def move_diagonal_one_square
+    square = @piece_hash.fetch('square').flatten(1)
+    color = @piece_hash.fetch('color')
+    diagonal = check_surrounding_for_diagonal(color, square)
+    check_pawn_diagonal_moves(diagonal, color)
+  end
+
+  def check_pawn_diagonal_moves(arr, color)
+    diagonal_moves = []
+    @chess_pieces.each do |_key, value|
+      value.each_key do |_property|
+        next unless value['color'] != color
+        next unless arr.include?(value['square'].flatten)
+
+        diagonal_moves.push(value['square'].flatten)
+      end
+    end
+    diagonal_moves
   end
 
   def move_vertical_one_square
@@ -276,6 +330,7 @@ module ChessPiece
     end
   end
 
+  ## Pattern for the Rooks ##
   def rook_pattern
     move_positive_y = move_positive_y_direction
     move_negative_y = move_negative_y_direction
@@ -284,7 +339,6 @@ module ChessPiece
     [move_positive_y, move_negative_y, move_positive_x, move_negative_x].flatten(1)
   end
 
-  # this is where i should start next
   def move_positive_y_direction
     positions = []
     # can't hardcode 0, it has to be on the axis nearest to the piece

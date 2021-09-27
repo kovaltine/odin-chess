@@ -14,7 +14,7 @@ module SurroundingPiece
     surrounding_pieces_diagonal(coord, board_pieces).compact!.uniq!
   end
 
-  # the way the board renders makes everything confusing
+  # board renders bottom up, not top down
   def surrounding_pieces_diagonal(coord, board_pieces)
     diagonal_pieces = []
     diagonal_pieces.push(diagonal_axis_piece([1, -1], coord, board_pieces))

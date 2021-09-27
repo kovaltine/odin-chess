@@ -31,9 +31,7 @@ module Board
   end
 
   def add_pieces(positions, properties, board)
-    # this is giving me nil after a piece is overtaken
     positions.each do |position|
-      # p properties['code']
       board[position[0]][position[1]] = properties['code']
     end
     board

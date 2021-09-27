@@ -41,13 +41,14 @@ class Chess
 
   # make sure white always goes first
   def play_game
-    # until team_lost?
-    @team = toggle_team(@team)
-    puts_pieces_lost
-    chess_board(@chess_pieces)
-    @chess_pieces = move_piece
-
-    # end
+    until team_lost?
+      p 'play chess'
+      @team = toggle_team(@team)
+      puts_pieces_lost
+      chess_board(@chess_pieces)
+      @chess_pieces = move_piece
+      p @chess_pieces
+    end
     puts "Congratulations #{@team}, you won!"
   end
 
@@ -62,9 +63,9 @@ class Chess
     piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
     surrounding_pieces = surrounding_board_pieces(piece_coordinates)
     p "surrounding pieces #{surrounding_pieces}"
+
     move_arr = movement_pattern(piece_coordinates, surrounding_pieces)
-    check_piece_options(move_arr) ? new_piece_position : move_piece
-    update_position(new_coordinates, piece_coordinates, @chess_pieces)
+    check_piece_options(move_arr) ? new_piece_position(piece_coordinates) : move_piece
   end
 
   # find the surrounding chess pieces
@@ -94,8 +95,6 @@ class Chess
     end
   end
 
-  # right now the pawn can take a piece if there's an opponent right in front of them
-  # if one of the opposing pieces is in a diagonal slot, then it can move there
   def check_piece_options(move_arr)
     return false if move_arr.nil?
 
@@ -107,18 +106,16 @@ class Chess
     false
   end
 
-  def new_piece_position
+  def new_piece_position(old_coord)
     puts 'enter the new coordinates'
     opposing_team = toggle_team(@team)
-    coord = piece_position until valid_piece_move?(coord, opposing_team)
+    new_coord = piece_position until valid_piece_move?(new_coord, opposing_team)
+
+    update_position(new_coord, old_coord)
   end
 
-  # if moving to new can't move to the same place that has the same color
-  # if selecting a piece must be one that's on your team
   def valid_piece_move?(coordinates, team = @team)
     return false if coordinates.nil?
-
-    # if find_piece_hash(coordinates).fetch('')
 
     @chess_pieces.each_pair do |_key, value|
       return true if value['color'] == team && value['square'] == [coordinates]
@@ -147,11 +144,9 @@ class Chess
     'invalid input'
   end
 
-  # check for check/checkmate.
-  # how to make sure the king can't move somewhere it would be taken?
-  def update_position(new_coord, piece_coord, chess_pieces)
+  def update_position(new_coord, piece_coord)
     piece_key = []
-    board_pieces = chess_pieces
+    board_pieces = @chess_pieces
 
     board_pieces.each_pair do |_key, value|
       value.each_value do |position|
@@ -159,6 +154,8 @@ class Chess
 
         piece_key.push(value['code'])
         position.replace([new_coord])
+        # update move if it's a pawn
+        value['move'] += 1 if value['code'] == BLACK_PIECES.fetch('pawn') || WHITE_PIECES.fetch('pawn')
       end
     end
     remove_piece(new_coord, piece_key, board_pieces)
@@ -176,6 +173,7 @@ class Chess
         board_pieces.delete(key)
       end
     end
+    p board_pieces
     board_pieces
   end
 end
