@@ -1,7 +1,5 @@
 # frozen_string_literal:true
 
-# require_relative './chess'
-
 BLACK_PIECES = {
   'rook' => " \u2656",
   'knight' => " \u2658",
@@ -228,7 +226,7 @@ module ChessPiece
 
   # get the arr of potential moves
   def piece_move_arr(type, square)
-    @start = square
+    @start = square.freeze
     @type = type
     case type
     when 'rook'
@@ -241,6 +239,8 @@ module ChessPiece
     when 'knight'
       p knight_pattern
       knight_pattern
+    when 'bishop'
+      bishop_pattern
       # one for each piece type
       # when 'knight'
       #   knight_pattern
@@ -249,19 +249,29 @@ module ChessPiece
     end
   end
 
-  def add_one
-    @chess_pieces.each_pair do |_key, value|
-      value.each_value do |data|
-        next unless data == [@start]
-
-        next unless [value['code']] == @type
-
-        value['move'] += 1
-      end
-    end
+  ## Bishops ##
+  def bishop_pattern
+    # diagonal can be four directions
+    coord = @start.dup
+    bishop_line = []
+    bishop_options = []
+    bishop_options.push(diagonal_pattern([1, 1], coord, bishop_line))
+    bishop_options.push(diagonal_pattern([-1, 1], coord, bishop_line))
+    bishop_options.push(diagonal_pattern([1, -1], coord, bishop_line))
+    bishop_options.push(diagonal_pattern([-1, -1], coord, bishop_line))
+    options = bishop_options.flatten(1).uniq!
+    limit_axis_options(options)
   end
 
-  ## Pattern for the Knights ##
+  def diagonal_pattern(pattern, coord, bishop_line)
+    return bishop_line unless (coord[0] + pattern[0]).between?(0, 7) && (coord[1] + pattern[1]).between?(0, 7)
+
+    bishop_line.push([coord[0] += pattern[0], coord[1] += pattern[1]])
+
+    diagonal_pattern(pattern, coord, bishop_line)
+  end
+
+  ## Knights ##
   def knight_pattern
     # at most 8 possibilities
     knight_coords = []
@@ -281,7 +291,7 @@ module ChessPiece
     valid_knight
   end
 
-  ## Pattern for the Pawns ##
+  ## Pawns ##
   def pawn_pattern
     moves = []
     moves.push(move_vertical_two_squares) if @piece_hash.fetch_values('move') == [0]
@@ -310,6 +320,32 @@ module ChessPiece
 
       options.push(option)
     end
+  end
+
+  # add one to pawn moves
+  def add_one
+    @chess_pieces.each_pair do |_key, value|
+      value.each_value do |data|
+        next unless data == [@start]
+
+        next unless [value['code']] == @type
+
+        value['move'] += 1
+      end
+    end
+  end
+
+  def check_pawn_diagonal_moves(arr, color)
+    diagonal_moves = []
+    @chess_pieces.each do |_key, value|
+      value.each_key do |_property|
+        next unless value['color'] != color
+        next unless arr.include?(value['square'].flatten)
+
+        diagonal_moves.push(value['square'].flatten)
+      end
+    end
+    diagonal_moves
   end
 
   def check_surrounding_for_diagonal(color, square)
@@ -341,19 +377,6 @@ module ChessPiece
     check_pawn_diagonal_moves(diagonal, color)
   end
 
-  def check_pawn_diagonal_moves(arr, color)
-    diagonal_moves = []
-    @chess_pieces.each do |_key, value|
-      value.each_key do |_property|
-        next unless value['color'] != color
-        next unless arr.include?(value['square'].flatten)
-
-        diagonal_moves.push(value['square'].flatten)
-      end
-    end
-    diagonal_moves
-  end
-
   def move_vertical_one_square
     case @piece_hash.fetch('color')
     when 'white'
@@ -377,7 +400,7 @@ module ChessPiece
     end
   end
 
-  ## Pattern for the Rooks ##
+  ## Rooks ##
   def rook_pattern
     move_positive_y = move_positive_y_direction
     move_negative_y = move_negative_y_direction
