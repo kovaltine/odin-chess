@@ -230,17 +230,16 @@ module ChessPiece
     @type = type
     case type
     when 'rook'
-      p rook_pattern
       rook_pattern
     when 'pawn'
       @chess_pieces = add_one
-      p pawn_pattern.compact!
       pawn_pattern
     when 'knight'
-      p knight_pattern
       knight_pattern
     when 'bishop'
-      bishop_pattern
+      p bishop_pattern
+    when 'queen'
+      queen_pattern
       # one for each piece type
       # when 'knight'
       #   knight_pattern
@@ -249,21 +248,31 @@ module ChessPiece
     end
   end
 
-  ## Bishops ##
-  def bishop_pattern
-    # diagonal can be four directions
-    coord = @start.dup
-    bishop_line = []
-    bishop_options = []
-    bishop_options.push(diagonal_pattern([1, 1], coord, bishop_line))
-    bishop_options.push(diagonal_pattern([-1, 1], coord, bishop_line))
-    bishop_options.push(diagonal_pattern([1, -1], coord, bishop_line))
-    bishop_options.push(diagonal_pattern([-1, -1], coord, bishop_line))
-    options = bishop_options.flatten(1).uniq!
-    limit_axis_options(options)
+  ## Queen ##
+  def queen_pattern
+    move_x_y = rook_pattern
+    move_diagonal = bishop_pattern
+    [move_x_y, move_diagonal].flatten(1)
   end
 
-  def diagonal_pattern(pattern, coord, bishop_line)
+  ## Bishop ##
+  def bishop_pattern
+    pos_y_pos_x = diagonal_pattern([1, 1])
+    pos_y_pos_x_options = limit_axis_options(pos_y_pos_x)
+
+    neg_y_pos_x = diagonal_pattern([-1, 1])
+    neg_y_pos_x_options = limit_axis_options(neg_y_pos_x)
+
+    pos_y_neg_x = diagonal_pattern([1, -1])
+    pos_y_neg_x_options = limit_axis_options(pos_y_neg_x)
+
+    neg_y_neg_x = diagonal_pattern([-1, -1])
+    neg_y_neg_x_options = limit_axis_options(neg_y_neg_x)
+
+    [pos_y_pos_x_options, neg_y_pos_x_options, pos_y_neg_x_options, neg_y_neg_x_options].flatten(1)
+  end
+
+  def diagonal_pattern(pattern, coord = @start.dup, bishop_line = [])
     return bishop_line unless (coord[0] + pattern[0]).between?(0, 7) && (coord[1] + pattern[1]).between?(0, 7)
 
     bishop_line.push([coord[0] += pattern[0], coord[1] += pattern[1]])
@@ -271,7 +280,7 @@ module ChessPiece
     diagonal_pattern(pattern, coord, bishop_line)
   end
 
-  ## Knights ##
+  ## Knight ##
   def knight_pattern
     # at most 8 possibilities
     knight_coords = []
@@ -291,7 +300,7 @@ module ChessPiece
     valid_knight
   end
 
-  ## Pawns ##
+  ## Pawn ##
   def pawn_pattern
     moves = []
     moves.push(move_vertical_two_squares) if @piece_hash.fetch_values('move') == [0]
@@ -400,7 +409,7 @@ module ChessPiece
     end
   end
 
-  ## Rooks ##
+  ## Rook ##
   def rook_pattern
     move_positive_y = move_positive_y_direction
     move_negative_y = move_negative_y_direction
