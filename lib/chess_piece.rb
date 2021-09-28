@@ -237,15 +237,42 @@ module ChessPiece
     when 'knight'
       knight_pattern
     when 'bishop'
-      p bishop_pattern
+      bishop_pattern
     when 'queen'
       queen_pattern
+    when 'king'
+      king_pattern
       # one for each piece type
       # when 'knight'
       #   knight_pattern
       # when 'bishop'
       #   bishop_pattern
     end
+  end
+
+  ## King ##
+  def king_pattern
+    # take the first one from all the rook pattern
+    move_positive_y = move_positive_y_direction[0]
+    move_negative_y = move_negative_y_direction[0]
+    move_positive_x = move_positive_x_direction[0]
+    move_negative_x = move_negative_x_direction[0]
+    pos_y_pos_x = diagonal_pattern([1, 1])[0]
+    pos_y_pos_x_options = limit_axis_options(pos_y_pos_x)
+
+    neg_y_pos_x = diagonal_pattern([-1, 1])[0]
+    neg_y_pos_x_options = limit_axis_options(neg_y_pos_x)
+
+    pos_y_neg_x = diagonal_pattern([1, -1])[0]
+    pos_y_neg_x_options = limit_axis_options(pos_y_neg_x)
+
+    neg_y_neg_x = diagonal_pattern([-1, -1])[0]
+    neg_y_neg_x_options = limit_axis_options(neg_y_neg_x)
+
+    p [move_positive_y, move_negative_y, move_positive_x, move_negative_x, pos_y_pos_x_options, neg_y_pos_x_options,
+       pos_y_neg_x_options, neg_y_neg_x_options].compact!
+    [move_positive_y, move_negative_y, move_positive_x, move_negative_x, pos_y_pos_x_options, neg_y_pos_x_options,
+     pos_y_neg_x_options, neg_y_neg_x_options].compact!
   end
 
   ## Queen ##
@@ -465,6 +492,8 @@ module ChessPiece
   end
 
   def limit_axis_options(arr)
+    return nil if arr.nil?
+
     options = []
     arr.each do |option|
       options.push(option)
