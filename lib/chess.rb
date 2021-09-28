@@ -47,7 +47,7 @@ class Chess
       chess_board(@chess_pieces)
       @chess_pieces = move_piece
     end
-    puts "Congratulations #{@team}, you won!"
+    puts "\nCongratulations #{@team}, you won!"
   end
 
   def puts_pieces_lost
@@ -56,15 +56,14 @@ class Chess
   end
 
   def move_piece
-    puts "#{@team}'s move"
+    puts "\n#{@team}'s move"
     puts 'enter the coordinates of the piece you would like to move'
     piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
-    p piece_coordinates
     surrounding_pieces = surrounding_board_pieces(piece_coordinates)
 
     move_arr = movement_pattern(piece_coordinates, surrounding_pieces)
 
-    check_piece_options(move_arr) ? new_piece_position(piece_coordinates) : move_piece
+    check_piece_options(move_arr) ? new_piece_position(piece_coordinates, move_arr) : move_piece
   end
 
   # find the surrounding chess pieces
@@ -104,16 +103,29 @@ class Chess
     move_arr.each do |option|
       return true if valid_piece_move?(option, opposing_team)
     end
-    p 'cannot move this piece'
+    puts 'cannot move this piece'
     false
   end
 
-  def new_piece_position(old_coord)
+  def new_piece_position(old_coord, move_arr)
     puts 'enter the new coordinates'
     opposing_team = toggle_team(@team)
     new_coord = piece_position until valid_piece_move?(new_coord, opposing_team)
+    # make sure that the new coord is contained in move_arr
+    if move_arr.include?(new_coord)
+      update_position(new_coord, old_coord)
+    else
+      puts 'invalid move'
+      select_different_piece? ? move_piece : new_piece_position(old_coord, move_arr)
+    end
+  end
 
-    update_position(new_coord, old_coord)
+  def select_different_piece?
+    puts 'Do you want to select a different piece? Enter y/n'
+    answer = gets.chomp
+    return true if answer == 'y'
+
+    false
   end
 
   def valid_piece_move?(coordinates, team = @team)

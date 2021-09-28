@@ -215,13 +215,8 @@ module ChessPiece
   def movement_pattern(coord, surrounding)
     @surrounding = surrounding
     @piece_hash = find_piece_hash(coord)
-    # find the type of piece
     piece_type = find_piece_type
-
-    # determine the pattern that it must follow
     piece_move_arr(piece_type, coord)
-
-    # send it back to move_piece
   end
 
   # get the arr of potential moves
@@ -232,7 +227,6 @@ module ChessPiece
     when 'rook'
       rook_pattern
     when 'pawn'
-      @chess_pieces = add_one
       pawn_pattern
     when 'knight'
       knight_pattern
@@ -242,17 +236,11 @@ module ChessPiece
       queen_pattern
     when 'king'
       king_pattern
-      # one for each piece type
-      # when 'knight'
-      #   knight_pattern
-      # when 'bishop'
-      #   bishop_pattern
     end
   end
 
   ## King ##
   def king_pattern
-    # take the first one from all the rook pattern
     move_positive_y = move_positive_y_direction[0]
     move_negative_y = move_negative_y_direction[0]
     move_positive_x = move_positive_x_direction[0]
@@ -269,8 +257,6 @@ module ChessPiece
     neg_y_neg_x = diagonal_pattern([-1, -1])[0]
     neg_y_neg_x_options = limit_axis_options(neg_y_neg_x)
 
-    p [move_positive_y, move_negative_y, move_positive_x, move_negative_x, pos_y_pos_x_options, neg_y_pos_x_options,
-       pos_y_neg_x_options, neg_y_neg_x_options].compact!
     [move_positive_y, move_negative_y, move_positive_x, move_negative_x, pos_y_pos_x_options, neg_y_pos_x_options,
      pos_y_neg_x_options, neg_y_neg_x_options].compact!
   end
@@ -328,22 +314,17 @@ module ChessPiece
   end
 
   ## Pawn ##
+  # pawn's first move doesn't work properly
   def pawn_pattern
     moves = []
-    moves.push(move_vertical_two_squares) if @piece_hash.fetch_values('move') == [0]
+    moves.push(move_vertical_two_squares) # if @piece_hash.fetch_values('move') == [0]
+    # p "pawn's move number #{@piece_hash.fetch_values('move')}"
     moves.push(move_vertical_one_square)
     attack = move_diagonal_one_square
     pawn_moves = limit_axis_options_pawn(moves)
-    pawn_moves.push(check_pawn_attack(attack))
+    pawn_moves.push(limit_axis_options(attack).flatten(1))
+    p "pawn moves #{pawn_moves}"
     pawn_moves
-  end
-
-  def check_pawn_attack(attack)
-    options = []
-    attack.each do |option|
-      options.push(option) if @surrounding.include?(option)
-    end
-    options
   end
 
   # cannot move forward if there is a piece right in front
@@ -358,18 +339,18 @@ module ChessPiece
     end
   end
 
-  # add one to pawn moves
-  def add_one
-    @chess_pieces.each_pair do |_key, value|
-      value.each_value do |data|
-        next unless data == [@start]
+  # # add one to pawn moves
+  # def add_one
+  #   @chess_pieces.each_pair do |_key, value|
+  #     value.each_value do |data|
+  #       next unless data == [@start]
 
-        next unless [value['code']] == @type
+  #       next unless [value['code']] == @type
 
-        value['move'] += 1
-      end
-    end
-  end
+  #       value['move'] += 1
+  #     end
+  #   end
+  # end
 
   def check_pawn_diagonal_moves(arr, color)
     diagonal_moves = []
@@ -447,7 +428,6 @@ module ChessPiece
 
   def move_positive_y_direction
     positions = []
-    # can't hardcode 0, it has to be on the axis nearest to the piece
     y = @start[0]
     y -= 1
     while y <= 7 && y >= 0
