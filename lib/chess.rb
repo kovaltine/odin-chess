@@ -16,21 +16,21 @@ class Chess
     @chess_pieces = start_chess_pieces
     @pieces_lost = []
     # @player_team = choose_team
-    @team = 'Black'
+    @team = 'Yellow'
     play_game
   end
 
   def choose_team
     input = pick_team
-    if %w[White Black].include?(input)
+    if %w[Blue Yellow].include?(input)
       input
     else
-      puts "please enter 'Black' or 'White'"
+      puts "please enter 'Yellow' or 'Blue'"
       pick_team
     end
   end
 
-  # make sure white always goes first
+  # make sure Blue always goes first
   def play_game
     # first_round
     until team_lost?
@@ -83,10 +83,10 @@ class Chess
 
   def toggle_team(team)
     case team
-    when 'Black'
-      'White'
-    when 'White'
-      'Black'
+    when 'Yellow'
+      'Blue'
+    when 'Blue'
+      'Yellow'
     end
   end
 

@@ -16,7 +16,7 @@ module Display
 
   def pick_team
     system 'clear'
-    puts "\nWould you like to play as black or white?"
+    puts "\nWould you like to play as Yellow or Blue?"
     gets.chomp
   end
 
@@ -26,12 +26,12 @@ module Display
 
   def ask_for_move
     puts "\n#{@team}'s move"
-    puts "\nEnter the coordinates of the piece you would like to move".colorize(:yellow)
+    puts "\nEnter the coordinates of the piece you would like to move"
     puts 'Number first, then the letter'
   end
 
   def new_position
-    puts "\nEnter the new coordinates".colorize(:light_blue)
+    puts "\nEnter the new coordinates"
     puts 'Number first, then the letter'
   end
 
@@ -41,7 +41,7 @@ module Display
   end
 
   def invalid_move
-    puts "Sorry! I don't know what that means".colorize(:red)
+    puts "Sorry! I don't think you can".colorize(:red)
     puts 'Please try again'
   end
 
