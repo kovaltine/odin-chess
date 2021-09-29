@@ -3,34 +3,50 @@
 require_relative './board'
 require_relative './chess_piece'
 require_relative './surrounding_piece'
+require_relative './display'
 
 # plays the chess game
 class Chess
   include Board
   include ChessPiece
   include SurroundingPiece
+  include Display
 
   def initialize
     @chess_pieces = start_chess_pieces
     @pieces_lost = []
-    @team = 'black' # choose_team
+    # @player_team = choose_team
+    @team = 'Black'
     play_game
   end
 
-  # this function needs to get redone for sure
   def choose_team
-    puts 'Would you like to play as black or white?'
-    input = gets.chomp
-    case input
-    when 'white'
-      @team = 0
-    when 'black'
-      @team = 1
+    input = pick_team
+    if %w[White Black].include?(input)
+      input
     else
-      puts "please enter 'black' or 'white'"
-      choose_team
+      puts "please enter 'Black' or 'White'"
+      pick_team
     end
   end
+
+  # make sure white always goes first
+  def play_game
+    # first_round
+    until team_lost?
+      @team = toggle_team(@team)
+      puts_pieces_lost
+      chess_board(@chess_pieces)
+      @chess_pieces = move_piece
+    end
+    end_message
+  end
+
+  # def first_round
+  #   puts_pieces_lost
+  #   chess_board(@chess_pieces)
+  #   @chess_pieces = move_piece
+  # end
 
   # the exit condition will be if one of the players has lost their king
   def team_lost?
@@ -39,30 +55,11 @@ class Chess
     true
   end
 
-  # make sure white always goes first
-  def play_game
-    until team_lost?
-      @team = toggle_team(@team)
-      puts_pieces_lost
-      chess_board(@chess_pieces)
-      @chess_pieces = move_piece
-    end
-    puts "\nCongratulations #{@team}, you won!"
-  end
-
-  def puts_pieces_lost
-    system 'clear'
-    puts "Casualties: #{@pieces_lost.join}\n"
-  end
-
   def move_piece
-    puts "\n#{@team}'s move"
-    puts 'enter the coordinates of the piece you would like to move'
+    ask_for_move
     piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
     surrounding_pieces = surrounding_board_pieces(piece_coordinates)
-
     move_arr = movement_pattern(piece_coordinates, surrounding_pieces)
-
     check_piece_options(move_arr) ? new_piece_position(piece_coordinates, move_arr) : move_piece
   end
 
@@ -86,16 +83,16 @@ class Chess
 
   def toggle_team(team)
     case team
-    when 'black'
-      'white'
-    when 'white'
-      'black'
+    when 'Black'
+      'White'
+    when 'White'
+      'Black'
     end
   end
 
   def check_piece_options(move_arr)
     if move_arr.nil?
-      p 'cannot move this piece'
+      cannot_move
       return false
     end
 
@@ -103,26 +100,25 @@ class Chess
     move_arr.each do |option|
       return true if valid_piece_move?(option, opposing_team)
     end
-    puts 'cannot move this piece'
+    cannot_move
     false
   end
 
   def new_piece_position(old_coord, move_arr)
-    puts 'enter the new coordinates'
+    new_position
     opposing_team = toggle_team(@team)
     new_coord = piece_position until valid_piece_move?(new_coord, opposing_team)
-    # make sure that the new coord is contained in move_arr
+    p move_arr
     if move_arr.include?(new_coord)
       update_position(new_coord, old_coord)
     else
-      puts 'invalid move'
+      invalid_move
       select_different_piece? ? move_piece : new_piece_position(old_coord, move_arr)
     end
   end
 
   def select_different_piece?
-    puts 'Do you want to select a different piece? Enter y/n'
-    answer = gets.chomp
+    answer = pick_another_piece
     return true if answer == 'y'
 
     false
@@ -141,7 +137,6 @@ class Chess
 
   # player puts in coordinates that correspond with a position in the arr
   def piece_position
-    puts 'number first, then the letter'
     coord = gets.chomp.chars
     x = coord[0].to_i
     y = convert_letter_to_num(coord[1])
@@ -155,7 +150,7 @@ class Chess
 
       index += 1
     end
-    'invalid input'
+    invalid_move
   end
 
   def update_position(new_coord, piece_coord)

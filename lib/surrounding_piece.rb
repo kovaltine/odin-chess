@@ -34,7 +34,7 @@ module SurroundingPiece
     new_coord[1] += pattern[1]
     while new_coord[0].between?(0, 7) && new_coord[1].between?(0, 7)
       board_pieces.each do |piece|
-        return @nearby_pieces.push(piece) if !(piece == coord) && ([new_coord[0], new_coord[1]] == piece)
+        return @nearby_pieces.push(piece) if (piece != coord) && ([new_coord[0], new_coord[1]] == piece)
       end
       new_coord[0] += pattern[0]
       new_coord[1] += pattern[1]

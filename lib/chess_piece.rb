@@ -23,89 +23,89 @@ CHESS_PIECES = {
   'black_queen_rook' => {
     'code' => BLACK_PIECES.fetch('rook'),
     'square' => [[0, 0]],
-    'color' => 'black'
+    'color' => 'Black'
   },
   'black_king_rook' => {
     'code' => BLACK_PIECES.fetch('rook'),
     'square' => [[0, 7]],
-    'color' => 'black'
+    'color' => 'Black'
   },
   'black_queen_knight' => {
     'code' => BLACK_PIECES.fetch('knight'),
     'square' => [[0, 1]],
-    'color' => 'black'
+    'color' => 'Black'
   },
   'black_king_knight' => {
     'code' => BLACK_PIECES.fetch('knight'),
     'square' => [[0, 6]],
-    'color' => 'black'
+    'color' => 'Black'
   },
   'black_queen_bishop' => {
     'code' => BLACK_PIECES.fetch('bishop'),
     'square' => [[0, 2]],
-    'color' => 'black'
+    'color' => 'Black'
   },
   'black_king_bishop' => {
     'code' => BLACK_PIECES.fetch('bishop'),
     'square' => [[0, 5]],
-    'color' => 'black'
+    'color' => 'Black'
   },
   'black_queen' => {
     'code' => BLACK_PIECES.fetch('queen'),
     'square' => [[0, 3]],
-    'color' => 'black'
+    'color' => 'Black'
   },
   'black_king' => {
     'code' => BLACK_PIECES.fetch('king'),
     'square' => [[0, 4]],
-    'color' => 'black'
+    'color' => 'Black'
   },
   'black_pawn_one' => {
     'code' => BLACK_PIECES.fetch('pawn'),
     'square' => [[1, 0]],
-    'color' => 'black',
+    'color' => 'Black',
     'move' => 0
   },
   'black_pawn_two' => {
     'code' => BLACK_PIECES.fetch('pawn'),
     'square' => [[1, 1]],
-    'color' => 'black',
+    'color' => 'Black',
     'move' => 0
   },
   'black_pawn_three' => {
     'code' => BLACK_PIECES.fetch('pawn'),
     'square' => [[1, 2]],
-    'color' => 'black',
+    'color' => 'Black',
     'move' => 0
   },
   'black_pawn_four' => {
     'code' => BLACK_PIECES.fetch('pawn'),
     'square' => [[1, 3]],
-    'color' => 'black',
+    'color' => 'Black',
     'move' => 0
   },
   'black_pawn_five' => {
     'code' => BLACK_PIECES.fetch('pawn'),
     'square' => [[1, 4]],
-    'color' => 'black',
+    'color' => 'Black',
     'move' => 0
   },
   'black_pawn_six' => {
     'code' => BLACK_PIECES.fetch('pawn'),
     'square' => [[1, 5]],
-    'color' => 'black',
+    'color' => 'Black',
     'move' => 0
   },
   'black_pawn_seven' => {
     'code' => BLACK_PIECES.fetch('pawn'),
     'square' => [[1, 6]],
-    'color' => 'black',
+    'color' => 'Black',
     'move' => 0
   },
   'black_pawn_eight' => {
     'code' => BLACK_PIECES.fetch('pawn'),
     'square' => [[1, 7]],
-    'color' => 'black',
+    'color' => 'Black',
     'move' => 0
   },
 
@@ -113,90 +113,90 @@ CHESS_PIECES = {
   'white_queen_rook' => {
     'code' => WHITE_PIECES.fetch('rook'),
     'square' => [[7, 0]],
-    'color' => 'white'
+    'color' => 'White'
   },
   'white_king_rook' => {
     'code' => WHITE_PIECES.fetch('rook'),
     'square' => [[7, 7]],
-    'color' => 'white'
+    'color' => 'White'
   },
   'white_queen_knight' => {
     'code' => WHITE_PIECES.fetch('knight'),
     'square' => [[7, 1]],
-    'color' => 'white'
+    'color' => 'White'
   },
   'white_king_knight' => {
     'code' => WHITE_PIECES.fetch('knight'),
     'square' => [[7, 6]],
-    'color' => 'white'
+    'color' => 'White'
   },
   'white_queen_bishop' => {
     'code' => WHITE_PIECES.fetch('bishop'),
     'square' => [[7, 2]],
-    'color' => 'white'
+    'color' => 'White'
   },
   'white_king_bishop' => {
     'code' => WHITE_PIECES.fetch('bishop'),
     'square' => [[7, 5]],
-    'color' => 'white'
+    'color' => 'White'
   },
   'white_queen' => {
     'code' => WHITE_PIECES.fetch('queen'),
     'square' => [[7, 3]],
-    'color' => 'white'
+    'color' => 'White'
   },
   'white_king' => {
     'code' => WHITE_PIECES.fetch('king'),
     'square' => [[7, 4]],
-    'color' => 'white'
+    'color' => 'White'
   },
   'white_pawn_one' => {
     'code' => WHITE_PIECES.fetch('pawn'),
     'square' => [[6, 0]],
-    'color' => 'white',
+    'color' => 'White',
     'move' => 0
   },
   'white_pawn_two' => {
     'code' => WHITE_PIECES.fetch('pawn'),
     'square' => [[6, 1]],
-    'color' => 'white',
+    'color' => 'White',
     'move' => 0
   },
   'white_pawn_three' => {
     'code' => WHITE_PIECES.fetch('pawn'),
     'square' => [[6, 2]],
-    'color' => 'white',
+    'color' => 'White',
     'move' => 0
   },
   'white_pawn_four' => {
     'code' => WHITE_PIECES.fetch('pawn'),
     'square' => [[6, 3]],
-    'color' => 'white',
+    'color' => 'White',
     'move' => 0
   },
   'white_pawn_five' => {
     'code' => WHITE_PIECES.fetch('pawn'),
     'square' => [[6, 4]],
-    'color' => 'white',
+    'color' => 'White',
     'move' => 0
   },
   'white_pawn_six' => {
     'code' => WHITE_PIECES.fetch('pawn'),
     'square' => [[6, 5]],
-    'color' => 'white',
+    'color' => 'White',
     'move' => 0
   },
   'white_pawn_seven' => {
     'code' => WHITE_PIECES.fetch('pawn'),
     'square' => [[6, 6]],
-    'color' => 'white',
+    'color' => 'White',
     'move' => 0
 
   },
   'white_pawn_eight' => {
     'code' => WHITE_PIECES.fetch('pawn'),
     'square' => [[6, 7]],
-    'color' => 'white',
+    'color' => 'White',
     'move' => 0
   }
 }
@@ -323,7 +323,6 @@ module ChessPiece
     attack = move_diagonal_one_square
     pawn_moves = limit_axis_options_pawn(moves)
     pawn_moves.push(limit_axis_options(attack).flatten(1))
-    p "pawn moves #{pawn_moves}"
     pawn_moves
   end
 
@@ -368,10 +367,10 @@ module ChessPiece
   def check_surrounding_for_diagonal(color, square)
     diagonal = []
     case color
-    when 'white'
+    when 'White'
       diagonal.push(find_diagonal_match([-1, -1], square)).flatten(1)
       diagonal.push(find_diagonal_match([-1, +1], square)).flatten(1)
-    when 'black'
+    when 'Black'
       diagonal.push(find_diagonal_match([+1, -1], square)).flatten(1)
       diagonal.push(find_diagonal_match([+1, +1], square)).flatten(1)
     end
@@ -396,22 +395,22 @@ module ChessPiece
 
   def move_vertical_one_square
     case @piece_hash.fetch('color')
-    when 'white'
+    when 'White'
       square = @piece_hash.fetch('square').flatten(1)
       [square[0] - 1, square[1]]
-    when 'black'
+    when 'Black'
       square = @piece_hash.fetch('square').flatten(1)
       [square[0] + 1, square[1]]
     end
   end
 
-  # black will always be at the top, white always at the bottom
+  # Black will always be at the top, White always at the bottom
   def move_vertical_two_squares
     case @piece_hash.fetch('color')
-    when 'white'
+    when 'White'
       square = @piece_hash.fetch('square').flatten(1)
       [square[0] - 2, square[1]]
-    when 'black'
+    when 'Black'
       square = @piece_hash.fetch('square').flatten(1)
       [square[0] + 2, square[1]]
     end
@@ -483,11 +482,11 @@ module ChessPiece
 
   def find_piece_type
     case @piece_hash['color']
-    when 'white'
+    when 'White'
       WHITE_PIECES.each_pair do |key, value|
         return key if value == @piece_hash['code']
       end
-    when 'black'
+    when 'Black'
       BLACK_PIECES.each_pair do |key, value|
         return key if value == @piece_hash['code']
       end
@@ -502,6 +501,7 @@ module ChessPiece
         return @chess_pieces.fetch(key)
       end
     end
+    # taking the new coord and using it as piece selection
     p 'invalid'
   end
 end
