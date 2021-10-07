@@ -2,7 +2,7 @@
 
 require_relative './lib/chess'
 require_relative './lib/board'
-require_relative './lib/chess_piece'
+require_relative './lib/chess_pieces'
 
 def start_game
   Chess.new

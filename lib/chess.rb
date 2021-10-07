@@ -1,14 +1,14 @@
 # frozen_string_literal:true
 
 require_relative './board'
-require_relative './chess_piece'
+require_relative './chess_pieces'
 require_relative './surrounding_piece'
 require_relative './display'
 
 # plays the chess game
 class Chess
   # include Board
-  include ChessPiece
+  include ChessPieces
   include SurroundingPiece
   include Display
 
@@ -60,6 +60,7 @@ class Chess
     piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
     surrounding_pieces = surrounding_board_pieces(piece_coordinates)
     move_arr = movement_pattern(piece_coordinates, surrounding_pieces)
+    p "move_arr #{move_arr}"
     check_piece_options(move_arr) ? new_piece_position(piece_coordinates, move_arr) : move_piece
   end
 

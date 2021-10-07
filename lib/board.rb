@@ -1,7 +1,7 @@
 # frozen_string_literal:true
 
 require_relative './chess'
-require_relative './chess_piece'
+require_relative './chess_pieces'
 
 # includes the functions to make the board
 class Board
