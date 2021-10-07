@@ -41,7 +41,7 @@ module Display
   end
 
   def invalid_move
-    puts "Sorry! I don't think you can".colorize(:red)
+    puts "Sorry! You can't!".colorize(:red)
     puts 'Please try again'
   end
 

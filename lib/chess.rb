@@ -29,7 +29,7 @@ class Chess
       pick_team
     end
   end
-
+# BUG! freezes when you pick the other team
   # make sure Blue always goes first
   def play_game
     board = Board.new

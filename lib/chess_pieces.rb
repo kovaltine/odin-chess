@@ -3,6 +3,7 @@
 require 'colorize'
 require_relative './Pieces/rook'
 require_relative './Pieces/knight'
+require_relative './Pieces/bishop'
 
 YELLOW_PIECES = {
   'rook' => " \u2656".colorize(:yellow),
@@ -219,6 +220,7 @@ module ChessPieces
     @piece_hash = find_piece_hash(coord)
     piece_type = find_piece_type
     piece_move_arr(piece_type, coord)
+    # bring limit_axis_options to this function
   end
 
   # get the arr of potential moves
@@ -236,7 +238,7 @@ module ChessPieces
     when 'knight'
       Knight.new(@surrounding, square).knight_pattern
     when 'bishop'
-      bishop_pattern
+      Bishop.new(@surrounding, square).bishop_pattern
     when 'queen'
       queen_pattern
     when 'king'
@@ -274,29 +276,29 @@ module ChessPieces
   end
 
   ## Bishop ##
-  def bishop_pattern
-    pos_y_pos_x = diagonal_pattern([1, 1])
-    pos_y_pos_x_options = limit_axis_options(pos_y_pos_x)
+  # def bishop_pattern
+  #   pos_y_pos_x = diagonal_pattern([1, 1])
+  #   pos_y_pos_x_options = limit_axis_options(pos_y_pos_x)
 
-    neg_y_pos_x = diagonal_pattern([-1, 1])
-    neg_y_pos_x_options = limit_axis_options(neg_y_pos_x)
+  #   neg_y_pos_x = diagonal_pattern([-1, 1])
+  #   neg_y_pos_x_options = limit_axis_options(neg_y_pos_x)
 
-    pos_y_neg_x = diagonal_pattern([1, -1])
-    pos_y_neg_x_options = limit_axis_options(pos_y_neg_x)
+  #   pos_y_neg_x = diagonal_pattern([1, -1])
+  #   pos_y_neg_x_options = limit_axis_options(pos_y_neg_x)
 
-    neg_y_neg_x = diagonal_pattern([-1, -1])
-    neg_y_neg_x_options = limit_axis_options(neg_y_neg_x)
+  #   neg_y_neg_x = diagonal_pattern([-1, -1])
+  #   neg_y_neg_x_options = limit_axis_options(neg_y_neg_x)
 
-    [pos_y_pos_x_options, neg_y_pos_x_options, pos_y_neg_x_options, neg_y_neg_x_options].flatten(1)
-  end
+  #   [pos_y_pos_x_options, neg_y_pos_x_options, pos_y_neg_x_options, neg_y_neg_x_options].flatten(1)
+  # end
 
-  def diagonal_pattern(pattern, coord = @start.dup, bishop_line = [])
-    return bishop_line unless (coord[0] + pattern[0]).between?(0, 7) && (coord[1] + pattern[1]).between?(0, 7)
+  # def diagonal_pattern(pattern, coord = @start.dup, bishop_line = [])
+  #   return bishop_line unless (coord[0] + pattern[0]).between?(0, 7) && (coord[1] + pattern[1]).between?(0, 7)
 
-    bishop_line.push([coord[0] += pattern[0], coord[1] += pattern[1]])
+  #   bishop_line.push([coord[0] += pattern[0], coord[1] += pattern[1]])
 
-    diagonal_pattern(pattern, coord, bishop_line)
-  end
+  #   diagonal_pattern(pattern, coord, bishop_line)
+  # end
 
   # ## Knight ##
   # def knight_pattern
