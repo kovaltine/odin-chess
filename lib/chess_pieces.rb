@@ -2,6 +2,7 @@
 
 require 'colorize'
 require_relative './Pieces/rook'
+require_relative './Pieces/knight'
 
 YELLOW_PIECES = {
   'rook' => " \u2656".colorize(:yellow),
@@ -227,12 +228,13 @@ module ChessPieces
     @type = type
     case type
     when 'rook'
-      rook = Rook.new(@surrounding, square)
-      rook.rook_pattern
+      Rook.new(@surrounding, square).rook_pattern
     when 'pawn'
+      # pawn would need four arguments
+      # pawn = Pawn.new(@surrounding, square, @piece_hash)
       pawn_pattern
     when 'knight'
-      knight_pattern
+      Knight.new(@surrounding, square).knight_pattern
     when 'bishop'
       bishop_pattern
     when 'queen'
@@ -296,25 +298,25 @@ module ChessPieces
     diagonal_pattern(pattern, coord, bishop_line)
   end
 
-  ## Knight ##
-  def knight_pattern
-    # at most 8 possibilities
-    knight_coords = []
-    patterns = [[-2, 1], [-2, -1], [-1, 2], [-1, -2], [2, -1], [2, 1], [1, -2], [1, 2]]
-    patterns.each do |pattern|
-      knight_coords.push([pattern[0] + @start[0], pattern[1] + @start[1]])
-    end
-    valid_knight_position(knight_coords)
-  end
+  # ## Knight ##
+  # def knight_pattern
+  #   # at most 8 possibilities
+  #   knight_coords = []
+  #   patterns = [[-2, 1], [-2, -1], [-1, 2], [-1, -2], [2, -1], [2, 1], [1, -2], [1, 2]]
+  #   patterns.each do |pattern|
+  #     knight_coords.push([pattern[0] + @start[0], pattern[1] + @start[1]])
+  #   end
+  #   valid_knight_position(knight_coords)
+  # end
 
-  # make sure the knight positions are on the board
-  def valid_knight_position(coords)
-    valid_knight = []
-    coords.each do |coord|
-      valid_knight.push(coord) if coord[0].between?(0, 7) && coord[1].between?(0, 7)
-    end
-    valid_knight
-  end
+  # # make sure the knight positions are on the board
+  # def valid_knight_position(coords)
+  #   valid_knight = []
+  #   coords.each do |coord|
+  #     valid_knight.push(coord) if coord[0].between?(0, 7) && coord[1].between?(0, 7)
+  #   end
+  #   valid_knight
+  # end
 
   ## Pawn ##
   # pawn's first move doesn't work properly
@@ -473,15 +475,15 @@ module ChessPieces
   #   limit_axis_options(positions)
   # end
 
-  # def limit_axis_options(arr)
-  #   return nil if arr.nil?
+  def limit_axis_options(arr)
+    return nil if arr.nil?
 
-  #   options = []
-  #   arr.each do |option|
-  #     options.push(option)
-  #     return options if @surrounding.include?(option)
-  #   end
-  # end
+    options = []
+    arr.each do |option|
+      options.push(option)
+      return options if @surrounding.include?(option)
+    end
+  end
 
   def find_piece_type
     case @piece_hash['color']
