@@ -4,14 +4,14 @@ require_relative './chess'
 require_relative './chess_piece'
 
 # includes the functions to make the board
-module Board
-  # creates the board with starting positions
+class Board
   def chess_board(pieces)
-    # a grid of 8x8 coloured squares
     board = make_board
     board_with_pieces = find_piece_position(board, pieces)
     draw_board(board_with_pieces)
   end
+
+  private
 
   # makes the board
   def make_board

@@ -7,7 +7,7 @@ require_relative './display'
 
 # plays the chess game
 class Chess
-  include Board
+  # include Board
   include ChessPiece
   include SurroundingPiece
   include Display
@@ -32,11 +32,11 @@ class Chess
 
   # make sure Blue always goes first
   def play_game
-    # first_round
+    board = Board.new
     until team_lost?
       @team = toggle_team(@team)
       puts_pieces_lost
-      chess_board(@chess_pieces)
+      board.chess_board(@chess_pieces)
       @chess_pieces = move_piece
     end
     end_message
@@ -108,7 +108,6 @@ class Chess
     new_position
     opposing_team = toggle_team(@team)
     new_coord = piece_position until valid_piece_move?(new_coord, opposing_team)
-    p move_arr
     if move_arr.include?(new_coord)
       update_position(new_coord, old_coord)
     else
