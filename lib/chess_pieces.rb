@@ -240,7 +240,8 @@ module ChessPieces
     when 'bishop'
       Bishop.new(@surrounding, square).bishop_pattern
     when 'queen'
-      queen_pattern
+      # queen would be adding together the rook and the bishop patterns
+      queen_pattern(square)
     when 'king'
       king_pattern
     end
@@ -269,9 +270,9 @@ module ChessPieces
   end
 
   ## Queen ##
-  def queen_pattern
-    move_x_y = rook_pattern
-    move_diagonal = bishop_pattern
+  def queen_pattern(square)
+    move_x_y = Rook.new(@surrounding, square).rook_pattern
+    move_diagonal = Bishop.new(@surrounding, square).bishop_pattern
     [move_x_y, move_diagonal].flatten(1)
   end
 

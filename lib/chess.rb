@@ -29,7 +29,8 @@ class Chess
       pick_team
     end
   end
-# BUG! freezes when you pick the other team
+
+  # BUG! freezes when you pick the other team
   # make sure Blue always goes first
   def play_game
     board = Board.new
@@ -60,7 +61,7 @@ class Chess
     piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
     surrounding_pieces = surrounding_board_pieces(piece_coordinates)
     move_arr = movement_pattern(piece_coordinates, surrounding_pieces)
-    p "move_arr #{move_arr}"
+    # p "move_arr #{move_arr}"
     check_piece_options(move_arr) ? new_piece_position(piece_coordinates, move_arr) : move_piece
   end
 
