@@ -15,15 +15,12 @@ class Computer
 
   attr_accessor :colour
 
-  def select_piece(chess_pieces)
+  def select_piece(chess_pieces, pieces_lost)
+    @pieces_lost = pieces_lost
     @chess_pieces = chess_pieces
     ask_for_move_computer
     pieces = find_comp_pieces
-    # this needs to be an array
-
-    # p pieces[rand(pieces.length)].is_a?(Array)
-    p "Pieces #{pieces}"
-    rand_select_piece(pieces)
+    p rand_select_piece(pieces)
   end
 
   def find_comp_pieces
@@ -35,12 +32,14 @@ class Computer
     comp_pieces.flatten(1)
   end
 
-  def check_piece_options(move_arr)
+  def check_piece_options(move_arr, old_coord)
     return false if move_arr.nil?
 
+    # make it so move_arr does not contain invalid options
     option = rand_select_piece(move_arr)
-    opposing_team = toggle_team
-    valid_piece_move?(option, opposing_team) ? update_position(option, old_coord) : check_piece_options
+    # opposing_team = toggle_team
+    update_position(option, old_coord)
+    # check_piece_options(move_arr, old_coord)
   end
 
   def rand_select_piece(arr)

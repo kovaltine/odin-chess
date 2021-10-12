@@ -68,19 +68,18 @@ class Chess
     if @team == @player_team
       @human.select_piece(@chess_pieces)
     elsif @team == @comp_team
-      @computer.select_piece(@chess_pieces)
+      @computer.select_piece(@chess_pieces, @pieces_lost)
     end
   end
 
   def move_piece(selection)
-    selection.is_a?(Array)
-    p selection
     surrounding_pieces = surrounding_board_pieces(selection)
     move_arr = movement_pattern(selection, surrounding_pieces)
     if @team == @player_team
       @human.check_piece_options(move_arr) ? @human.new_piece_position(selection, move_arr) : player_turn
     elsif @team == @comp_team
-      @computer.check_piece_options(move_arr) ? @computer.new_piece_position(selection, move_arr) : player_turn
+      # player_turn if move_arr.nil?
+      @computer.check_piece_options(move_arr, selection)
     end
     # check_piece_options(move_arr) ? new_piece_position(selection, move_arr) : player_turn
   end
