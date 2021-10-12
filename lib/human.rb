@@ -15,7 +15,8 @@ class Human
   attr_accessor :colour
 
   # this is how to move a piece for human
-  def select_piece
+  def select_piece(chess_pieces)
+    @chess_pieces = chess_pieces
     ask_for_move
     piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
   end

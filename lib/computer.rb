@@ -20,7 +20,7 @@ class Computer
     @chess_pieces = chess_pieces
     ask_for_move_computer
     pieces = find_comp_pieces
-    p rand_select_piece(pieces)
+    @piece_coord = rand_select_piece(pieces)
   end
 
   def find_comp_pieces
@@ -32,20 +32,39 @@ class Computer
     comp_pieces.flatten(1)
   end
 
-  def check_piece_options(move_arr, old_coord)
+  def check_piece_options(move_arr)
+    remove_invalid_options(move_arr)
     return false if move_arr.nil?
 
-    # make it so move_arr does not contain invalid options
-    option = rand_select_piece(move_arr)
-    # opposing_team = toggle_team
-    update_position(option, old_coord)
-    # check_piece_options(move_arr, old_coord)
+    @new_coord = rand_select_piece(move_arr)
+    # update_position(option, old_coord)
+  end
+
+  def remove_invalid_options(move_arr)
+    removed_options = []
+    @chess_pieces.each_pair do |_key, value|
+      next unless move_arr.include?(value['square']) && value['color'] == @colour
+
+      removed_options.push(value['square'])
+    end
+    filter_move_arr(move_arr, removed_options)
+  end
+
+  def filter_move_arr(move_arr, removed_options)
+    filtered = []
+    removed_options.each do |option|
+      next if move_arr.include?(option)
+
+      filtered.push(option)
+    end
+    filtered
   end
 
   def rand_select_piece(arr)
     arr[rand(arr.length)]
   end
 
+  # dunno if i need this here
   def valid_piece_move?(coordinates, team = @colour)
     return false if coordinates.nil?
 
@@ -56,26 +75,26 @@ class Computer
     true
   end
 
-  def update_position(new_coord, piece_coord)
+  def update_position
     piece_key = []
     board_pieces = @chess_pieces
 
     board_pieces.each_pair do |_key, value|
       value.each_value do |position|
-        next unless position == [piece_coord]
+        next unless position == [@piece_coord]
 
         piece_key.push(value['code'])
-        position.replace([new_coord])
+        position.replace([@new_coord])
       end
     end
-    remove_piece(new_coord, piece_key, board_pieces)
+    remove_piece(piece_key, board_pieces)
   end
 
   # removes a piece from the hash if it has been overtaken
-  def remove_piece(coord, piece, board_pieces)
+  def remove_piece(piece, board_pieces)
     board_pieces.each_pair do |key, value|
       value.each_value do |data|
-        next unless data == [coord]
+        next unless data == [@new_coord]
 
         next if [value['code']] == piece
 

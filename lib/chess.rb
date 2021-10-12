@@ -78,10 +78,8 @@ class Chess
     if @team == @player_team
       @human.check_piece_options(move_arr) ? @human.new_piece_position(selection, move_arr) : player_turn
     elsif @team == @comp_team
-      # player_turn if move_arr.nil?
-      @computer.check_piece_options(move_arr, selection)
+      @computer.check_piece_options(move_arr) ? @computer.update_position : player_turn
     end
-    # check_piece_options(move_arr) ? new_piece_position(selection, move_arr) : player_turn
   end
 
   def toggle_team

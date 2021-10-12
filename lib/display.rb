@@ -25,7 +25,7 @@ module Display
   end
 
   def ask_for_move
-    puts "\n#{@team}'s move"
+    puts "\n#{@player_team}'s move"
     puts "\nEnter the coordinates of the piece you would like to move"
     puts 'Number first, then the letter'
   end
