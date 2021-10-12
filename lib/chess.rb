@@ -15,18 +15,25 @@ class Chess
   def initialize
     @chess_pieces = start_chess_pieces
     @pieces_lost = []
-    # @player_team = choose_team
-    @team = 'Yellow'
+    @comp_team = []
+    @player_team = []
+    choose_team
+    # @team = 'Yellow'
     play_game
   end
 
   def choose_team
     input = pick_team
-    if %w[Blue Yellow].include?(input)
-      input
+    case input
+    when 'Yellow'
+      @comp_team = 'Blue'
+      @player_team = 'Yellow'
+    when 'Blue'
+      @comp_team = 'Yellow'
+      @player_team = 'Blue'
     else
       puts "please enter 'Yellow' or 'Blue'"
-      pick_team
+      choose_team
     end
   end
 
