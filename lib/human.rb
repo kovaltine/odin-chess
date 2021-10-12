@@ -19,6 +19,7 @@ class Human
     @chess_pieces = chess_pieces
     ask_for_move
     piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
+    piece_coordinates
   end
 
   # player puts in coordinates that correspond with a position in the arr
@@ -26,6 +27,7 @@ class Human
     coord = gets.chomp.chars
     x = coord[0].to_i
     y = convert_letter_to_num(coord[1])
+    p [y, x]
     [y, x]
   end
 
@@ -35,7 +37,7 @@ class Human
       return false
     end
 
-    opposing_team = toggle_team(@team)
+    opposing_team = toggle_team
     move_arr.each do |option|
       return true if valid_piece_move?(option, opposing_team)
     end
@@ -45,7 +47,7 @@ class Human
 
   def new_piece_position(old_coord, move_arr)
     new_position
-    opposing_team = toggle_team(@team)
+    opposing_team = toggle_team
     new_coord = piece_position until valid_piece_move?(new_coord, opposing_team)
     if move_arr.include?(new_coord)
       update_position(new_coord, old_coord)
@@ -63,7 +65,7 @@ class Human
     false
   end
 
-  def valid_piece_move?(coordinates, team = @team)
+  def valid_piece_move?(coordinates, team = @colour)
     return false if coordinates.nil?
 
     @chess_pieces.each_pair do |_key, value|
@@ -115,7 +117,7 @@ class Human
   end
 
   def toggle_team
-    case @team
+    case @colour
     when 'Blue'
       'Yellow'
     when 'Yellow'

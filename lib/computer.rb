@@ -50,6 +50,7 @@ class Computer
     filter_move_arr(move_arr, removed_options)
   end
 
+  # this still has issues
   def filter_move_arr(move_arr, removed_options)
     filtered = []
     removed_options.each do |option|

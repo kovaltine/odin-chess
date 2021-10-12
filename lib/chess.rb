@@ -31,7 +31,6 @@ class Chess
 
   def determine_human
     @human = Human.new
-    p "human team #{@player_team}"
     @human.colour = @player_team
   end
 
@@ -55,9 +54,11 @@ class Chess
   def play_game
     board = Board.new
     until team_lost?
+      p "team #{@team}"
       puts_pieces_lost
       board.chess_board(@chess_pieces)
       selection = player_turn
+      p "selection #{selection}"
       @chess_pieces = move_piece(selection)
       @team = toggle_team
     end
@@ -75,6 +76,8 @@ class Chess
   def move_piece(selection)
     surrounding_pieces = surrounding_board_pieces(selection)
     move_arr = movement_pattern(selection, surrounding_pieces)
+    p "player_team #{@player_team}"
+    p "computer_team #{@comp_team}"
     if @team == @player_team
       @human.check_piece_options(move_arr) ? @human.new_piece_position(selection, move_arr) : player_turn
     elsif @team == @comp_team
