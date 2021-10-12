@@ -4,6 +4,8 @@ require_relative './board'
 require_relative './chess_pieces'
 require_relative './surrounding_piece'
 require_relative './display'
+require_relative './human'
+require_relative './computer'
 
 # plays the chess game
 class Chess
@@ -15,11 +17,22 @@ class Chess
   def initialize
     @chess_pieces = start_chess_pieces
     @pieces_lost = []
-    @comp_team = []
-    @player_team = []
     choose_team
-    # @team = 'Yellow'
+    determine_computer
+    determine_human
+    @team = 'Blue'
     play_game
+  end
+
+  def determine_computer
+    @computer = Computer.new
+    @computer.colour = @comp_team
+  end
+
+  def determine_human
+    @human = Human.new
+    p "human team #{@player_team}"
+    @human.colour = @player_team
   end
 
   def choose_team
@@ -28,9 +41,11 @@ class Chess
     when 'Yellow'
       @comp_team = 'Blue'
       @player_team = 'Yellow'
+      # @human
     when 'Blue'
-      @comp_team = 'Yellow'
       @player_team = 'Blue'
+      @comp_team = 'Yellow'
+      # @computer
     else
       puts "please enter 'Yellow' or 'Blue'"
       choose_team
@@ -42,34 +57,33 @@ class Chess
   def play_game
     board = Board.new
     until team_lost?
-      @team = toggle_team(@team)
       puts_pieces_lost
       board.chess_board(@chess_pieces)
-      @chess_pieces = move_piece
+      if @team == @player_team
+        @chess_pieces = @human.move_piece(@chess_pieces)
+      elsif @team == @comp_team
+        @chess_pieces = @computer.move_piece(@chess_pieces)
+        # @chess_pieces = @team.move_piece
+      end
+      @team = toggle_team
     end
     end_message
   end
 
-  # def first_round
-  #   puts_pieces_lost
-  #   chess_board(@chess_pieces)
-  #   @chess_pieces = move_piece
-  # end
+  def toggle_team
+    case @team
+    when 'Blue'
+      'Yellow'
+    when 'Yellow'
+      'Blue'
+    end
+  end
 
   # the exit condition will be if one of the players has lost their king
   def team_lost?
     return false if @chess_pieces.key?('black_king') && @chess_pieces.key?('white_king')
 
     true
-  end
-
-  def move_piece
-    ask_for_move
-    piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
-    surrounding_pieces = surrounding_board_pieces(piece_coordinates)
-    move_arr = movement_pattern(piece_coordinates, surrounding_pieces)
-    # p "move_arr #{move_arr}"
-    check_piece_options(move_arr) ? new_piece_position(piece_coordinates, move_arr) : move_piece
   end
 
   # find the surrounding chess pieces
@@ -88,15 +102,6 @@ class Chess
       end
     end
     board_pieces.flatten(1)
-  end
-
-  def toggle_team(team)
-    case team
-    when 'Yellow'
-      'Blue'
-    when 'Blue'
-      'Yellow'
-    end
   end
 
   def check_piece_options(move_arr)
@@ -120,6 +125,7 @@ class Chess
     if move_arr.include?(new_coord)
       update_position(new_coord, old_coord)
     else
+      # should only get into this if the player is human
       invalid_move
       select_different_piece? ? move_piece : new_piece_position(old_coord, move_arr)
     end
@@ -141,14 +147,6 @@ class Chess
       return false if value['color'] != team && value['square'] == [coordinates]
     end
     true
-  end
-
-  # player puts in coordinates that correspond with a position in the arr
-  def piece_position
-    coord = gets.chomp.chars
-    x = coord[0].to_i
-    y = convert_letter_to_num(coord[1])
-    [y, x]
   end
 
   def convert_letter_to_num(letter)
@@ -191,3 +189,74 @@ class Chess
     board_pieces
   end
 end
+
+# class Human < Chess
+#   include ChessPieces
+#   include SurroundingPiece
+#   include Display
+
+#   attr_accessor :colour
+
+#   # this is how to move a piece for human
+#   def move_piece
+#     ask_for_move
+#     piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
+#     surrounding_pieces = surrounding_board_pieces(piece_coordinates)
+#     move_arr = movement_pattern(piece_coordinates, surrounding_pieces)
+#     # p "move_arr #{move_arr}"
+#     check_piece_options(move_arr) ? new_piece_position(piece_coordinates, move_arr) : move_piece
+#   end
+
+#   # player puts in coordinates that correspond with a position in the arr
+#   def piece_position
+#     coord = gets.chomp.chars
+#     x = coord[0].to_i
+#     y = convert_letter_to_num(coord[1])
+#     [y, x]
+#   end
+# end
+
+# class Computer < Chess
+#   include ChessPieces
+#   include SurroundingPiece
+#   include Display
+
+#   attr_accessor :colour
+
+#   def move_piece
+#     ask_for_move_computer
+#     piece_coordinates = comp_piece_position
+#     surrounding_pieces = surrounding_board_pieces(piece_coordinates)
+#     move_arr = movement_pattern(piece_coordinates, surrounding_pieces)
+#     # randomly select an option from move_arr
+#     # p "move_arr #{move_arr}"
+#     check_piece_options(move_arr) ? new_piece_position(piece_coordinates, move_arr) : move_piece
+#   end
+
+#   def comp_piece_position
+#     # go through all the pieces that match the comp colour
+#     pieces = find_comp_pieces
+#     p "pieces #{pieces}"
+#     # randomly select one
+#     select_piece(pieces)
+#   end
+
+#   def find_comp_pieces
+#     comp_pieces = []
+#     @chess_pieces.each_pair do |_key, value|
+#       value.each_pair do |property, data|
+#         next unless property == @colour
+
+#         board_pieces.push(data)
+#       end
+#     end
+#     comp_pieces.flatten(1)
+#   end
+
+#   def select_piece(pieces)
+#     # selects a pieces
+#     piece = pieces[rand(pieces.length)]
+#     # now i need the coord
+#     p "piece #{piece}"
+#   end
+# end

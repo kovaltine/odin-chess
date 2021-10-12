@@ -3,6 +3,8 @@
 require_relative './lib/chess'
 require_relative './lib/board'
 require_relative './lib/chess_pieces'
+require_relative './lib/computer'
+require_relative './lib/human'
 
 def start_game
   Chess.new
