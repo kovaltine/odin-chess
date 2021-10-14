@@ -47,8 +47,10 @@ class Bishop
     diagonal_pattern(pattern, coord, bishop_line)
   end
 
+  # if there's no surrounding of the same colour, then there are no axis limits
   def limit_axis_options(arr)
     return nil if arr.nil?
+    return arr if @surrounding.nil?
 
     options = []
     arr.each do |option|

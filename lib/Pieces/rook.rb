@@ -71,6 +71,7 @@ class Rook
 
   def limit_axis_options(arr)
     return nil if arr.nil?
+    return arr if @surrounding.nil?
 
     options = []
     arr.each do |option|

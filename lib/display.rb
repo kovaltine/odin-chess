@@ -52,11 +52,10 @@ module Display
 
   def ask_for_move_computer
     puts "\n The computer is thinking"
-    # these sleeps won't work
-    sleep(1)
+    # sleep(1)
     puts '...'
-    sleep(1)
+    # sleep(1)
     puts '...'
-    sleep(1)
+    # sleep(1)
   end
 end

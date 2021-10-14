@@ -252,7 +252,7 @@ module ChessPieces
   # could use the first axis options of the queen
   def king_pattern(square)
     like_a_rook = Rook.new(@surrounding, square).king_pattern
-    like_a_bishop = Bishop.new(@surrounding, square), king_pattern
+    like_a_bishop = Bishop.new(@surrounding, square).king_pattern
 
     [like_a_rook, like_a_bishop].compact!
   end
