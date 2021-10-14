@@ -19,8 +19,8 @@ class Computer
     @pieces_lost = pieces_lost
     @chess_pieces = chess_pieces
     ask_for_move_computer
-    pieces = find_comp_pieces
-    @piece_coord = rand_select_piece(pieces)
+    @pieces = find_comp_pieces
+    @piece_coord = rand_select_piece(@pieces)
   end
 
   def find_comp_pieces
@@ -33,30 +33,37 @@ class Computer
   end
 
   def check_piece_options(move_arr)
-    remove_invalid_options(move_arr)
-    return false if move_arr.nil?
+    move_arr = remove_invalid_options(move_arr)
+    return false if move_arr.empty?
+
+    p "filtered move_arr #{move_arr}"
 
     @new_coord = rand_select_piece(move_arr)
+    p "new coord #{@new_coord}"
+    @new_coord
     # update_position(option, old_coord)
   end
 
+  # go through the pieces and if there's a piece of the smae colour in the way then the piece can't go that way
   def remove_invalid_options(move_arr)
     removed_options = []
     @chess_pieces.each_pair do |_key, value|
-      next unless move_arr.include?(value['square']) && value['color'] == @colour
+      next unless move_arr.include?(value['square'].flatten) && value['color'] == @colour
 
-      removed_options.push(value['square'])
+      removed_options.push(value['square'].flatten)
     end
+    p "move_arr #{move_arr}"
+    p "removed options #{removed_options}"
     filter_move_arr(move_arr, removed_options)
   end
 
-  # this still has issues
   def filter_move_arr(move_arr, removed_options)
     filtered = []
-    removed_options.each do |option|
-      next if move_arr.include?(option)
+    move_arr.each do |option|
+      # remove items from removed options from move_arr
+      next if option.empty?
 
-      filtered.push(option)
+      filtered.push(option) unless removed_options.include?(option)
     end
     filtered
   end

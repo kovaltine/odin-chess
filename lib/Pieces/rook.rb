@@ -16,6 +16,14 @@ class Rook
     [move_positive_y, move_negative_y, move_positive_x, move_negative_x].flatten(1)
   end
 
+  def king_pattern
+    move_positive_y = move_positive_y_direction[0]
+    move_negative_y = move_negative_y_direction[0]
+    move_positive_x = move_positive_x_direction[0]
+    move_negative_x = move_negative_x_direction[0]
+    [move_positive_y, move_negative_y, move_positive_x, move_negative_x].flatten(1)
+  end
+
   def move_positive_y_direction
     positions = []
     y = @start[0]

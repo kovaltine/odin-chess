@@ -54,12 +54,20 @@ class Chess
   def play_game
     board = Board.new
     until team_lost?
-      p "team #{@team}"
       puts_pieces_lost
       board.chess_board(@chess_pieces)
       selection = player_turn
       p "selection #{selection}"
-      @chess_pieces = move_piece(selection)
+      # the selection is what @chess_pieces is getting set equal to
+      temp = move_piece(selection)
+      until temp.is_a?(Hash)
+        selection = player_turn
+        p "selection #{selection}"
+        temp = move_piece(selection)
+      end
+      @chess_pieces = temp
+      # don't make the transformation to @chess_pieces unless it returns what we want
+
       @team = toggle_team
     end
     end_message
@@ -67,7 +75,7 @@ class Chess
 
   def player_turn
     if @team == @player_team
-      @human.select_piece(@chess_pieces)
+      @human.select_piece(@chess_pieces, @pieces_lost)
     elsif @team == @comp_team
       @computer.select_piece(@chess_pieces, @pieces_lost)
     end
@@ -76,12 +84,10 @@ class Chess
   def move_piece(selection)
     surrounding_pieces = surrounding_board_pieces(selection)
     move_arr = movement_pattern(selection, surrounding_pieces)
-    p "player_team #{@player_team}"
-    p "computer_team #{@comp_team}"
     if @team == @player_team
       @human.check_piece_options(move_arr) ? @human.new_piece_position(selection, move_arr) : player_turn
     elsif @team == @comp_team
-      @computer.check_piece_options(move_arr) ? @computer.update_position : player_turn
+      @computer.check_piece_options(move_arr) ? @computer.update_position : false
     end
   end
 
@@ -96,7 +102,9 @@ class Chess
 
   # the exit condition will be if one of the players has lost their king
   def team_lost?
-    return false if @chess_pieces.key?('black_king') && @chess_pieces.key?('white_king')
+    p @chess_pieces.key?('yellow_king')
+    p @chess_pieces.key?('blue_king')
+    return false if @chess_pieces.key?('yellow_king') && @chess_pieces.key?('blue_king')
 
     true
   end

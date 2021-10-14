@@ -24,90 +24,91 @@ BLUE_PIECES = {
 }.freeze
 
 # might need a counter for the pawns to track if it's their first move
+# have to change all the names to their colours
 CHESS_PIECES = {
-  'black_queen_rook' => {
+  'yellow_queen_rook' => {
     'code' => YELLOW_PIECES.fetch('rook'),
     'square' => [[0, 0]],
     'color' => 'Yellow'
   },
-  'black_king_rook' => {
+  'yellow_king_rook' => {
     'code' => YELLOW_PIECES.fetch('rook'),
     'square' => [[0, 7]],
     'color' => 'Yellow'
   },
-  'black_queen_knight' => {
+  'yellow_queen_knight' => {
     'code' => YELLOW_PIECES.fetch('knight'),
     'square' => [[0, 1]],
     'color' => 'Yellow'
   },
-  'black_king_knight' => {
+  'yellow_king_knight' => {
     'code' => YELLOW_PIECES.fetch('knight'),
     'square' => [[0, 6]],
     'color' => 'Yellow'
   },
-  'black_queen_bishop' => {
+  'yellow_queen_bishop' => {
     'code' => YELLOW_PIECES.fetch('bishop'),
     'square' => [[0, 2]],
     'color' => 'Yellow'
   },
-  'black_king_bishop' => {
+  'yellow_king_bishop' => {
     'code' => YELLOW_PIECES.fetch('bishop'),
     'square' => [[0, 5]],
     'color' => 'Yellow'
   },
-  'black_queen' => {
+  'yellow_queen' => {
     'code' => YELLOW_PIECES.fetch('queen'),
     'square' => [[0, 3]],
     'color' => 'Yellow'
   },
-  'black_king' => {
+  'yellow_king' => {
     'code' => YELLOW_PIECES.fetch('king'),
     'square' => [[0, 4]],
     'color' => 'Yellow'
   },
-  'black_pawn_one' => {
+  'yellow_pawn_one' => {
     'code' => YELLOW_PIECES.fetch('pawn'),
     'square' => [[1, 0]],
     'color' => 'Yellow',
     'move' => 0
   },
-  'black_pawn_two' => {
+  'yellow_pawn_two' => {
     'code' => YELLOW_PIECES.fetch('pawn'),
     'square' => [[1, 1]],
     'color' => 'Yellow',
     'move' => 0
   },
-  'black_pawn_three' => {
+  'yellow_pawn_three' => {
     'code' => YELLOW_PIECES.fetch('pawn'),
     'square' => [[1, 2]],
     'color' => 'Yellow',
     'move' => 0
   },
-  'black_pawn_four' => {
+  'yellow_pawn_four' => {
     'code' => YELLOW_PIECES.fetch('pawn'),
     'square' => [[1, 3]],
     'color' => 'Yellow',
     'move' => 0
   },
-  'black_pawn_five' => {
+  'yellow_pawn_five' => {
     'code' => YELLOW_PIECES.fetch('pawn'),
     'square' => [[1, 4]],
     'color' => 'Yellow',
     'move' => 0
   },
-  'black_pawn_six' => {
+  'yellow_pawn_six' => {
     'code' => YELLOW_PIECES.fetch('pawn'),
     'square' => [[1, 5]],
     'color' => 'Yellow',
     'move' => 0
   },
-  'black_pawn_seven' => {
+  'yellow_pawn_seven' => {
     'code' => YELLOW_PIECES.fetch('pawn'),
     'square' => [[1, 6]],
     'color' => 'Yellow',
     'move' => 0
   },
-  'black_pawn_eight' => {
+  'yellow_pawn_eight' => {
     'code' => YELLOW_PIECES.fetch('pawn'),
     'square' => [[1, 7]],
     'color' => 'Yellow',
@@ -115,90 +116,90 @@ CHESS_PIECES = {
   },
 
   # whitepieces
-  'white_queen_rook' => {
+  'blue_queen_rook' => {
     'code' => BLUE_PIECES.fetch('rook'),
     'square' => [[7, 0]],
     'color' => 'Blue'
   },
-  'white_king_rook' => {
+  'blue_king_rook' => {
     'code' => BLUE_PIECES.fetch('rook'),
     'square' => [[7, 7]],
     'color' => 'Blue'
   },
-  'white_queen_knight' => {
+  'blue_queen_knight' => {
     'code' => BLUE_PIECES.fetch('knight'),
     'square' => [[7, 1]],
     'color' => 'Blue'
   },
-  'white_king_knight' => {
+  'blue_king_knight' => {
     'code' => BLUE_PIECES.fetch('knight'),
     'square' => [[7, 6]],
     'color' => 'Blue'
   },
-  'white_queen_bishop' => {
+  'blue_queen_bishop' => {
     'code' => BLUE_PIECES.fetch('bishop'),
     'square' => [[7, 2]],
     'color' => 'Blue'
   },
-  'white_king_bishop' => {
+  'blue_king_bishop' => {
     'code' => BLUE_PIECES.fetch('bishop'),
     'square' => [[7, 5]],
     'color' => 'Blue'
   },
-  'white_queen' => {
+  'blue_queen' => {
     'code' => BLUE_PIECES.fetch('queen'),
     'square' => [[7, 3]],
     'color' => 'Blue'
   },
-  'white_king' => {
+  'blue_king' => {
     'code' => BLUE_PIECES.fetch('king'),
     'square' => [[7, 4]],
     'color' => 'Blue'
   },
-  'white_pawn_one' => {
+  'blue_pawn_one' => {
     'code' => BLUE_PIECES.fetch('pawn'),
     'square' => [[6, 0]],
     'color' => 'Blue',
     'move' => 0
   },
-  'white_pawn_two' => {
+  'blue_pawn_two' => {
     'code' => BLUE_PIECES.fetch('pawn'),
     'square' => [[6, 1]],
     'color' => 'Blue',
     'move' => 0
   },
-  'white_pawn_three' => {
+  'blue_pawn_three' => {
     'code' => BLUE_PIECES.fetch('pawn'),
     'square' => [[6, 2]],
     'color' => 'Blue',
     'move' => 0
   },
-  'white_pawn_four' => {
+  'blue_pawn_four' => {
     'code' => BLUE_PIECES.fetch('pawn'),
     'square' => [[6, 3]],
     'color' => 'Blue',
     'move' => 0
   },
-  'white_pawn_five' => {
+  'blue_pawn_five' => {
     'code' => BLUE_PIECES.fetch('pawn'),
     'square' => [[6, 4]],
     'color' => 'Blue',
     'move' => 0
   },
-  'white_pawn_six' => {
+  'blue_pawn_six' => {
     'code' => BLUE_PIECES.fetch('pawn'),
     'square' => [[6, 5]],
     'color' => 'Blue',
     'move' => 0
   },
-  'white_pawn_seven' => {
+  'blue_pawn_seven' => {
     'code' => BLUE_PIECES.fetch('pawn'),
     'square' => [[6, 6]],
     'color' => 'Blue',
     'move' => 0
 
   },
-  'white_pawn_eight' => {
+  'blue_pawn_eight' => {
     'code' => BLUE_PIECES.fetch('pawn'),
     'square' => [[6, 7]],
     'color' => 'Blue',
@@ -243,31 +244,17 @@ module ChessPieces
       # queen would be adding together the rook and the bishop patterns
       queen_pattern(square)
     when 'king'
-      king_pattern
+      king_pattern(square)
     end
   end
 
   ## King ##
   # could use the first axis options of the queen
-  def king_pattern
-    move_positive_y = move_positive_y_direction[0]
-    move_negative_y = move_negative_y_direction[0]
-    move_positive_x = move_positive_x_direction[0]
-    move_negative_x = move_negative_x_direction[0]
-    pos_y_pos_x = diagonal_pattern([1, 1])[0]
-    pos_y_pos_x_options = limit_axis_options(pos_y_pos_x)
+  def king_pattern(square)
+    like_a_rook = Rook.new(@surrounding, square).king_pattern
+    like_a_bishop = Bishop.new(@surrounding, square), king_pattern
 
-    neg_y_pos_x = diagonal_pattern([-1, 1])[0]
-    neg_y_pos_x_options = limit_axis_options(neg_y_pos_x)
-
-    pos_y_neg_x = diagonal_pattern([1, -1])[0]
-    pos_y_neg_x_options = limit_axis_options(pos_y_neg_x)
-
-    neg_y_neg_x = diagonal_pattern([-1, -1])[0]
-    neg_y_neg_x_options = limit_axis_options(neg_y_neg_x)
-
-    [move_positive_y, move_negative_y, move_positive_x, move_negative_x, pos_y_pos_x_options, neg_y_pos_x_options,
-     pos_y_neg_x_options, neg_y_neg_x_options].compact!
+    [like_a_rook, like_a_bishop].compact!
   end
 
   ## Queen ##
