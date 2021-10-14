@@ -267,14 +267,21 @@ module ChessPieces
   ## Pawn ##
   # pawn's first move doesn't work properly
   def pawn_pattern
+    # see if you can make a new pawn object with a unique name
+    # can you see if that pawn object already exists?
+    # if so filter the pawn options
+    # if not then it can move forward by two
+
     moves = []
     moves.push(move_vertical_two_squares) # if @piece_hash.fetch_values('move') == [0]
     # p "pawn's move number #{@piece_hash.fetch_values('move')}"
     moves.push(move_vertical_one_square)
+    # filter the straight pawn options
+    moves = limit_axis_options_pawn(moves)
     attack = move_diagonal_one_square
-    pawn_moves = limit_axis_options_pawn(moves)
-    pawn_moves.push(limit_axis_options(attack).flatten(1))
-    pawn_moves
+    moves.push(attack)
+
+    # pawn_moves.push(limit_axis_options(attack).flatten(1))
   end
 
   # cannot move forward if there is a piece right in front
@@ -289,19 +296,6 @@ module ChessPieces
     end
   end
 
-  # # add one to pawn moves
-  # def add_one
-  #   @chess_pieces.each_pair do |_key, value|
-  #     value.each_value do |data|
-  #       next unless data == [@start]
-
-  #       next unless [value['code']] == @type
-
-  #       value['move'] += 1
-  #     end
-  #   end
-  # end
-
   def check_pawn_diagonal_moves(arr, color)
     diagonal_moves = []
     @chess_pieces.each do |_key, value|
@@ -312,10 +306,18 @@ module ChessPieces
         diagonal_moves.push(value['square'].flatten)
       end
     end
-    diagonal_moves
+    check_diagonal_moves_arr(diagonal_moves)
   end
 
-  def check_surrounding_for_diagonal(color, square)
+  def check_diagonal_moves_arr(diagonal_moves)
+    if diagonal_moves.empty?
+      diagonal_moves
+    else
+      diagonal_moves.uniq!.flatten(1)
+    end
+  end
+
+  def pawn_diagonal_option(color, square)
     diagonal = []
     case color
     when 'Blue'
@@ -340,7 +342,7 @@ module ChessPieces
   def move_diagonal_one_square
     square = @piece_hash.fetch('square').flatten(1)
     color = @piece_hash.fetch('color')
-    diagonal = check_surrounding_for_diagonal(color, square)
+    diagonal = pawn_diagonal_option(color, square)
     check_pawn_diagonal_moves(diagonal, color)
   end
 

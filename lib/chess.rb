@@ -50,27 +50,25 @@ class Chess
   end
 
   # BUG! freezes when you pick the other team
-  # make sure Blue always goes first
   def play_game
     board = Board.new
     until team_lost?
       puts_pieces_lost
       board.chess_board(@chess_pieces)
-      selection = player_turn
-      p "selection #{selection}"
-      # the selection is what @chess_pieces is getting set equal to
-      temp = move_piece(selection)
-      until temp.is_a?(Hash)
-        selection = player_turn
-        p "selection #{selection}"
-        temp = move_piece(selection)
-      end
-      @chess_pieces = temp
-      # don't make the transformation to @chess_pieces unless it returns what we want
-
+      @chess_pieces = make_a_move
       @team = toggle_team
     end
     end_message
+  end
+
+  def make_a_move
+    selection = player_turn
+    chess_hash = move_piece(selection)
+    until chess_hash.is_a?(Hash)
+      selection = player_turn
+      chess_hash = move_piece(selection)
+    end
+    chess_hash
   end
 
   def player_turn
@@ -85,8 +83,10 @@ class Chess
     surrounding_pieces = surrounding_board_pieces(selection)
     move_arr = movement_pattern(selection, surrounding_pieces)
     if @team == @player_team
+      p "human move_arr #{move_arr}"
       @human.check_piece_options(move_arr) ? @human.new_piece_position(selection, move_arr) : player_turn
     elsif @team == @comp_team
+      p "computer move_arr #{move_arr}"
       @computer.check_piece_options(move_arr) ? @computer.update_position : false
     end
   end
@@ -102,8 +102,6 @@ class Chess
 
   # the exit condition will be if one of the players has lost their king
   def team_lost?
-    p @chess_pieces.key?('yellow_king')
-    p @chess_pieces.key?('blue_king')
     return false if @chess_pieces.key?('yellow_king') && @chess_pieces.key?('blue_king')
 
     true

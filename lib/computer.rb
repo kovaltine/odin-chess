@@ -36,8 +36,6 @@ class Computer
     move_arr = remove_invalid_options(move_arr)
     return false if move_arr.empty?
 
-    p "filtered move_arr #{move_arr}"
-
     @new_coord = rand_select_piece(move_arr)
     p "new coord #{@new_coord}"
     @new_coord
@@ -52,8 +50,6 @@ class Computer
 
       removed_options.push(value['square'].flatten)
     end
-    p "move_arr #{move_arr}"
-    p "removed options #{removed_options}"
     filter_move_arr(move_arr, removed_options)
   end
 

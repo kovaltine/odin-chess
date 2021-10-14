@@ -50,6 +50,7 @@ class Human
     new_position
     opposing_team = toggle_team
     new_coord = piece_position until valid_piece_move?(new_coord, opposing_team)
+
     if move_arr.include?(new_coord)
       update_position(new_coord, old_coord)
     else
