@@ -49,7 +49,6 @@ class Chess
     end
   end
 
-  # BUG! freezes when you pick the other team
   def play_game
     board = Board.new
     until team_lost?
@@ -63,11 +62,9 @@ class Chess
 
   def make_a_move
     selection = player_turn
-    chess_hash = move_piece(selection)
-    until chess_hash.is_a?(Hash)
-      selection = player_turn
-      chess_hash = move_piece(selection)
-    end
+    check_team_color?(selection) ? chess_hash = move_piece(selection) : make_a_move
+
+    chess_hash = move_piece(selection) until chess_hash.is_a?(Hash)
     chess_hash
   end
 
@@ -81,15 +78,25 @@ class Chess
 
   def move_piece(selection)
     surrounding_pieces = surrounding_board_pieces(selection)
-    move_arr = movement_pattern(selection, surrounding_pieces)
+    move_arr = movement_pattern(selection, surrounding_pieces, @team)
     if @team == @player_team
-      p "human move_arr #{move_arr}"
       @human.check_piece_options(move_arr) ? @human.new_piece_position(selection, move_arr) : player_turn
     elsif @team == @comp_team
-      p "computer move_arr #{move_arr}"
       @computer.check_piece_options(move_arr) ? @computer.update_position : false
     end
   end
+
+  # def check_team_color?(selection)
+  #   # if the selection is not the same color as the current team making the selection
+  #   p piece_hash.fetch_values('color')
+  #   piece_hash = find_piece_hash(selection)
+  #   if piece_hash.nil?
+  #     invalid_move
+  #     false
+  #   end
+  #   false unless piece_hash.fetch_values('color') == @team
+  #   true
+  # end
 
   def toggle_team
     case @team

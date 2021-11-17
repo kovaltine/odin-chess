@@ -207,8 +207,6 @@ CHESS_PIECES = {
   }
 }
 
-# refactoring ideas: assign each piece type to an object
-
 # input the hash key, make decisions based on the piece type
 module ChessPieces
   def start_chess_pieces
@@ -219,6 +217,7 @@ module ChessPieces
   def movement_pattern(coord, surrounding)
     @surrounding = surrounding
     @piece_hash = find_piece_hash(coord)
+
     piece_type = find_piece_type
     piece_move_arr(piece_type, coord)
     # bring limit_axis_options to this function
@@ -270,7 +269,6 @@ module ChessPieces
       @piece_hash = increment_pawn_move
     end
     moves.push(move_vertical_one_square)
-    # filter the straight pawn options
     moves = limit_axis_options_pawn(moves)
     attack = move_diagonal_one_square
     moves.push(attack)
@@ -401,6 +399,6 @@ module ChessPieces
       end
     end
     # taking the new coord and using it as piece selection
-    p 'invalid'
+    nil
   end
 end

@@ -19,8 +19,8 @@ class Human
     @pieces_lost = pieces_lost
     @chess_pieces = chess_pieces
     ask_for_move
-    piece_coordinates = piece_position until valid_piece_move?(piece_coordinates)
-    piece_coordinates
+    piece_coordinates = piece_position
+    valid_piece_move?(piece_coordinates) ? select_piece(chess_pieces, pieces_lost) : piece_coordinates
   end
 
   # player puts in coordinates that correspond with a position in the arr
@@ -28,7 +28,6 @@ class Human
     coord = gets.chomp.chars
     x = coord[0].to_i
     y = convert_letter_to_num(coord[1])
-    p [y, x]
     [y, x]
   end
 
@@ -54,7 +53,6 @@ class Human
     if move_arr.include?(new_coord)
       update_position(new_coord, old_coord)
     else
-      # should only get into this if the player is human
       invalid_move
       select_different_piece? ? move_piece : new_piece_position(old_coord, move_arr)
     end
@@ -109,7 +107,7 @@ class Human
       value.each_value do |data|
         next unless data == [coord]
 
-        next if [value['code']] == piece
+        next if piece == [value['code']]
 
         @pieces_lost.push(value['code'])
         board_pieces.delete(key)
@@ -127,6 +125,3 @@ class Human
     end
   end
 end
-
-# ask_for_move
-#  each get their own set of chess pieces depending on the colour
