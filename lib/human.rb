@@ -18,9 +18,14 @@ class Human
   def select_piece(chess_pieces, pieces_lost)
     @pieces_lost = pieces_lost
     @chess_pieces = chess_pieces
+    @opposing_team = toggle_team
     ask_for_move
     piece_coordinates = piece_position
-    valid_piece_move?(piece_coordinates) ? select_piece(chess_pieces, pieces_lost) : piece_coordinates
+    until valid_piece_move?(piece_coordinates)
+      select_piece(chess_pieces, pieces_lost)
+      piece_coordinates = piece_position
+    end
+    piece_coordinates
   end
 
   # player puts in coordinates that correspond with a position in the arr
@@ -35,11 +40,13 @@ class Human
     if move_arr.nil?
       cannot_move
       return false
+    elsif move_arr == 'N/A'
+      empty_square
+      return false
     end
 
-    opposing_team = toggle_team
     move_arr.each do |option|
-      return true if valid_piece_move?(option, opposing_team)
+      return true if valid_piece_move?(option, @opposing_team)
     end
     cannot_move
     false
@@ -47,8 +54,7 @@ class Human
 
   def new_piece_position(old_coord, move_arr)
     new_position
-    opposing_team = toggle_team
-    new_coord = piece_position until valid_piece_move?(new_coord, opposing_team)
+    new_coord = piece_position until valid_piece_move?(new_coord, @opposing_team)
 
     if move_arr.include?(new_coord)
       update_position(new_coord, old_coord)
@@ -67,6 +73,8 @@ class Human
 
   def valid_piece_move?(coordinates, team = @colour)
     return false if coordinates.nil?
+
+    # return false unless @chess_pieces.fetch_values['square'].include?([coordinates])
 
     @chess_pieces.each_pair do |_key, value|
       return true if value['color'] == team && value['square'] == [coordinates]

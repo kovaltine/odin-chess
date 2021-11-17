@@ -217,6 +217,7 @@ module ChessPieces
   def movement_pattern(coord, surrounding)
     @surrounding = surrounding
     @piece_hash = find_piece_hash(coord)
+    return 'N/A' if @piece_hash.nil?
 
     piece_type = find_piece_type
     piece_move_arr(piece_type, coord)

@@ -36,11 +36,11 @@ class Chess
 
   def choose_team
     input = pick_team
-    case input
-    when 'Yellow'
+    case input.downcase
+    when 'yellow'
       @comp_team = 'Blue'
       @player_team = 'Yellow'
-    when 'Blue'
+    when 'blue'
       @player_team = 'Blue'
       @comp_team = 'Yellow'
     else
@@ -62,9 +62,11 @@ class Chess
 
   def make_a_move
     selection = player_turn
-    check_team_color?(selection) ? chess_hash = move_piece(selection) : make_a_move
-
-    chess_hash = move_piece(selection) until chess_hash.is_a?(Hash)
+    chess_hash = move_piece(selection)
+    until chess_hash.is_a?(Hash)
+      selection = player_turn
+      chess_hash = move_piece(selection)
+    end
     chess_hash
   end
 
@@ -72,31 +74,20 @@ class Chess
     if @team == @player_team
       @human.select_piece(@chess_pieces, @pieces_lost)
     elsif @team == @comp_team
+      ask_for_move_computer
       @computer.select_piece(@chess_pieces, @pieces_lost)
     end
   end
 
   def move_piece(selection)
     surrounding_pieces = surrounding_board_pieces(selection)
-    move_arr = movement_pattern(selection, surrounding_pieces, @team)
+    move_arr = movement_pattern(selection, surrounding_pieces)
     if @team == @player_team
       @human.check_piece_options(move_arr) ? @human.new_piece_position(selection, move_arr) : player_turn
     elsif @team == @comp_team
       @computer.check_piece_options(move_arr) ? @computer.update_position : false
     end
   end
-
-  # def check_team_color?(selection)
-  #   # if the selection is not the same color as the current team making the selection
-  #   p piece_hash.fetch_values('color')
-  #   piece_hash = find_piece_hash(selection)
-  #   if piece_hash.nil?
-  #     invalid_move
-  #     false
-  #   end
-  #   false unless piece_hash.fetch_values('color') == @team
-  #   true
-  # end
 
   def toggle_team
     case @team

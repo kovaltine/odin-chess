@@ -10,12 +10,12 @@ require 'colorize'
 # display information in the console
 module Display
   def puts_pieces_lost
-    # system 'clear'
+    system 'clear'
     puts "Casualties: #{@pieces_lost.join}\n"
   end
 
   def pick_team
-    # system 'clear'
+    system 'clear'
     puts "\nWould you like to play as Yellow or Blue?"
     gets.chomp
   end
@@ -25,7 +25,7 @@ module Display
   end
 
   def ask_for_move
-    puts "\n#{@player_team}'s move"
+    puts "\nPlayer's move"
     puts "\nEnter the coordinates of the piece you would like to move"
     puts 'Number first, then the letter'
   end
@@ -40,6 +40,11 @@ module Display
     puts 'Please try again'
   end
 
+  def empty_square
+    puts "\nSorry! There are no pieces here".colorize(:red)
+    puts 'Please try again'
+  end
+
   def invalid_move
     puts "Sorry! You can't!".colorize(:red)
     puts 'Please try again'
@@ -51,11 +56,11 @@ module Display
   end
 
   def ask_for_move_computer
-    puts "\n The computer is thinking"
-    # sleep(1)
     puts '...'
-    # sleep(1)
+    sleep(1)
     puts '...'
-    # sleep(1)
+    sleep(1)
+    puts '...'
+    sleep(1)
   end
 end
