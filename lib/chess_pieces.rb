@@ -233,8 +233,6 @@ module ChessPieces
     when 'rook'
       Rook.new(@surrounding, square).rook_pattern
     when 'pawn'
-      # pawn would need four arguments
-      # pawn = Pawn.new(@surrounding, square, @piece_hash)
       pawn_pattern
     when 'knight'
       Knight.new(@surrounding, square).knight_pattern
@@ -265,23 +263,25 @@ module ChessPieces
   end
 
   ## Pawn ##
-  # pawn's first move doesn't work properly
   def pawn_pattern
-    # see if you can make a new pawn object with a unique name
-    # can you see if that pawn object already exists?
-    # if so filter the pawn options
-    # if not then it can move forward by two
-
     moves = []
-    moves.push(move_vertical_two_squares) # if @piece_hash.fetch_values('move') == [0]
-    # p "pawn's move number #{@piece_hash.fetch_values('move')}"
+    if @piece_hash.fetch_values('move') == [0]
+      moves.push(move_vertical_two_squares)
+      @piece_hash = increment_pawn_move
+    end
     moves.push(move_vertical_one_square)
     # filter the straight pawn options
     moves = limit_axis_options_pawn(moves)
     attack = move_diagonal_one_square
     moves.push(attack)
+  end
 
-    # pawn_moves.push(limit_axis_options(attack).flatten(1))
+  # put this where the move has been confirmed
+  def increment_pawn_move
+    add_move = @piece_hash
+    # change the value in a hash:
+    add_move.store('move', 1)
+    add_move
   end
 
   # cannot move forward if there is a piece right in front
