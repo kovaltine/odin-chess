@@ -1,0 +1,208 @@
+---
+chess_pieces:
+  yellow_queen_rook:
+    code: "\e[0;33;49m ♖\e[0m"
+    square:
+    - - 0
+      - 0
+    color: Yellow
+  yellow_king_rook:
+    code: "\e[0;33;49m ♖\e[0m"
+    square:
+    - - 0
+      - 7
+    color: Yellow
+  yellow_queen_knight:
+    code: "\e[0;33;49m ♘\e[0m"
+    square:
+    - - 0
+      - 1
+    color: Yellow
+  yellow_king_knight:
+    code: "\e[0;33;49m ♘\e[0m"
+    square:
+    - - 0
+      - 6
+    color: Yellow
+  yellow_queen_bishop:
+    code: "\e[0;33;49m ♗\e[0m"
+    square:
+    - - 0
+      - 2
+    color: Yellow
+  yellow_king_bishop:
+    code: "\e[0;33;49m ♗\e[0m"
+    square:
+    - - 0
+      - 5
+    color: Yellow
+  yellow_queen:
+    code: "\e[0;33;49m ♕\e[0m"
+    square:
+    - - 0
+      - 3
+    color: Yellow
+  yellow_king:
+    code: "\e[0;33;49m ♔\e[0m"
+    square:
+    - - 0
+      - 4
+    color: Yellow
+  yellow_pawn_one:
+    code: "\e[0;33;49m ♙\e[0m"
+    square:
+    - - 1
+      - 0
+    color: Yellow
+    move: 0
+  yellow_pawn_two:
+    code: "\e[0;33;49m ♙\e[0m"
+    square:
+    - - 1
+      - 1
+    color: Yellow
+    move: 0
+  yellow_pawn_three:
+    code: "\e[0;33;49m ♙\e[0m"
+    square:
+    - - 1
+      - 2
+    color: Yellow
+    move: 0
+  yellow_pawn_four:
+    code: "\e[0;33;49m ♙\e[0m"
+    square:
+    - - 1
+      - 3
+    color: Yellow
+    move: 0
+  yellow_pawn_five:
+    code: "\e[0;33;49m ♙\e[0m"
+    square:
+    - - 1
+      - 4
+    color: Yellow
+    move: 0
+  yellow_pawn_seven:
+    code: "\e[0;33;49m ♙\e[0m"
+    square:
+    - - 1
+      - 6
+    color: Yellow
+    move: 0
+  yellow_pawn_eight:
+    code: "\e[0;33;49m ♙\e[0m"
+    square:
+    - - 1
+      - 7
+    color: Yellow
+    move: 0
+  blue_queen_rook:
+    code: "\e[0;94;49m ♜\e[0m"
+    square:
+    - - 7
+      - 0
+    color: Blue
+  blue_king_rook:
+    code: "\e[0;94;49m ♜\e[0m"
+    square:
+    - - 7
+      - 7
+    color: Blue
+  blue_queen_knight:
+    code: "\e[0;94;49m ♞\e[0m"
+    square:
+    - - 7
+      - 1
+    color: Blue
+  blue_king_knight:
+    code: "\e[0;94;49m ♞\e[0m"
+    square:
+    - - 7
+      - 6
+    color: Blue
+  blue_queen_bishop:
+    code: "\e[0;94;49m ♝\e[0m"
+    square:
+    - - 7
+      - 2
+    color: Blue
+  blue_king_bishop:
+    code: "\e[0;94;49m ♝\e[0m"
+    square:
+    - - 7
+      - 5
+    color: Blue
+  blue_queen:
+    code: "\e[0;94;49m ♛\e[0m"
+    square:
+    - - 7
+      - 3
+    color: Blue
+  blue_king:
+    code: "\e[0;94;49m ♚\e[0m"
+    square:
+    - - 7
+      - 4
+    color: Blue
+  blue_pawn_one:
+    code: "\e[0;94;49m ♟\e[0m"
+    square:
+    - - 6
+      - 0
+    color: Blue
+    move: 0
+  blue_pawn_two:
+    code: "\e[0;94;49m ♟\e[0m"
+    square:
+    - - 6
+      - 1
+    color: Blue
+    move: 0
+  blue_pawn_three:
+    code: "\e[0;94;49m ♟\e[0m"
+    square:
+    - - 6
+      - 2
+    color: Blue
+    move: 0
+  blue_pawn_four:
+    code: "\e[0;94;49m ♟\e[0m"
+    square:
+    - - 6
+      - 3
+    color: Blue
+    move: 0
+  blue_pawn_five:
+    code: "\e[0;94;49m ♟\e[0m"
+    square:
+    - - 6
+      - 4
+    color: Blue
+    move: 0
+  blue_pawn_six:
+    code: "\e[0;94;49m ♟\e[0m"
+    square:
+    - - 6
+      - 5
+    color: Blue
+    move: 0
+  blue_pawn_seven:
+    code: "\e[0;94;49m ♟\e[0m"
+    square:
+    - - 3
+      - 5
+    color: Blue
+    move: 1
+  blue_pawn_eight:
+    code: "\e[0;94;49m ♟\e[0m"
+    square:
+    - - 6
+      - 7
+    color: Blue
+    move: 0
+pieces_lost:
+- "\e[0;33;49m ♙\e[0m"
+computer: 
+player: Yellow
+current_turn: Yellow

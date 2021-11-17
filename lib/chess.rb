@@ -6,6 +6,7 @@ require_relative './surrounding_piece'
 require_relative './display'
 require_relative './human'
 require_relative './computer'
+require_relative 'database'
 
 # plays the chess game
 class Chess
@@ -13,14 +14,17 @@ class Chess
   include ChessPieces
   include SurroundingPiece
   include Display
+  include Database
 
   def initialize
     @chess_pieces = start_chess_pieces
     @pieces_lost = []
+    @filenames = []
     choose_team
     determine_computer
     determine_human
     @team = 'Blue'
+    load_game
     play_game
   end
 
@@ -53,11 +57,30 @@ class Chess
     board = Board.new
     until team_lost?
       puts_pieces_lost
+      save_game
       board.chess_board(@chess_pieces)
       @chess_pieces = make_a_move
       @team = toggle_team
     end
     end_message
+  end
+
+  def load_game
+    puts 'would you like to load your game?'
+    input = gets.chomp.downcase
+    case input
+    when 'y'
+      load_file
+    end
+  end
+
+  def save_game
+    puts 'would you like to save your game?'
+    input = gets.chomp.downcase
+    case input
+    when 'y'
+      save_file
+    end
   end
 
   def make_a_move

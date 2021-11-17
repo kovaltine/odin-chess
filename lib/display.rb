@@ -63,4 +63,8 @@ module Display
     puts '...'
     sleep(1)
   end
+
+  def display_saved_end
+    puts 'file has been saved'.colorize(:red)
+  end
 end

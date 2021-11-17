@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require 'yaml'
-require './chess'
+require_relative 'chess'
+require_relative 'display'
 require 'colorize'
 
 # for saving games so they can be played later
@@ -66,7 +67,7 @@ module Database
     files
   end
 
-  def load_game
+  def load_file
     find_saved_file
     load_saved_file
     File.delete("saves/#{@saved_game}") if File.exist?("saves/#{@saved_game}")
