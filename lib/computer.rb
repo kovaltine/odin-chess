@@ -31,14 +31,16 @@ class Computer
   end
 
   def check_piece_options(move_arr)
+    return false if move_arr.nil?
+
     move_arr = remove_invalid_options(move_arr)
-    return false if move_arr.empty?
+    return false if move_arr.nil?
 
     @new_coord = rand_select_piece(move_arr)
     @new_coord
   end
 
-  # go through the pieces and if there's a piece of the same colour in the way then the piece can't go that way
+  # if there's a piece of the same colour in the way then the piece can't go that way
   def remove_invalid_options(move_arr)
     removed_options = []
     @chess_pieces.each_pair do |_key, value|
@@ -56,6 +58,7 @@ class Computer
 
       filtered.push(option) unless removed_options.include?(option)
     end
+    p "computer filter move_arr #{filtered}"
     filtered
   end
 

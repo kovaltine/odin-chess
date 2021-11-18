@@ -23,14 +23,13 @@ module Database
     Dir.mkdir('saves') unless Dir.exist?('saves')
     filename = type_filename
     File.open("saves/#{filename}", 'w') { |file| file.write save_to_yaml }
-    display_saved_end
   end
 
   def save_to_yaml
     YAML.dump(
       'chess_pieces' => @chess_pieces,
       'pieces_lost' => @pieces_lost,
-      'computer' => @computer_team,
+      'computer' => @comp_team,
       'player' => @player_team,
       'current_turn' => @team
     )
@@ -39,11 +38,14 @@ module Database
   def find_saved_file
     show_file_list
     file_number = user_input
+    # if !file_list.include?(file_number)
+
     @saved_game = file_list[file_number.to_i - 1] unless file_number == 'exit'
   end
 
   def user_input
     puts 'enter a number to retrieve your save file'.colorize(:light_blue)
+    puts "or type 'exit' to abort"
     gets.chomp.to_i
   end
 
@@ -70,7 +72,11 @@ module Database
   def load_file
     find_saved_file
     load_saved_file
-    File.delete("saves/#{@saved_game}") if File.exist?("saves/#{@saved_game}")
+    if File.exist?("saves/#{@saved_game}")
+      File.delete("saves/#{@saved_game}")
+    else
+      false
+    end
   rescue StandardError
     puts display_load_error
   end
@@ -83,7 +89,7 @@ module Database
     file = YAML.safe_load(File.read("saves/#{@saved_game}"))
     @chess_pieces = file['chess_pieces']
     @pieces_lost = file['pieces_lost']
-    @computer_team = file['computer']
+    @comp_team = file['computer']
     @player_team = file['player']
     @team = file['current_turn']
   end

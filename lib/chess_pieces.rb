@@ -333,7 +333,7 @@ module ChessPieces
     return nil if @surrounding.nil?
 
     @surrounding.each do |option|
-      return option if option == [square[0] + pattern[0], square[1] + pattern[1]]
+      return [option] if option == [square[0] + pattern[0], square[1] + pattern[1]]
     end
     nil
   end

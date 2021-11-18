@@ -83,13 +83,20 @@ chess_pieces:
       - 4
     color: Yellow
     move: 0
-  yellow_pawn_seven:
+  yellow_pawn_six:
     code: "\e[0;33;49m ♙\e[0m"
     square:
     - - 1
-      - 6
+      - 5
     color: Yellow
     move: 0
+  yellow_pawn_seven:
+    code: "\e[0;33;49m ♙\e[0m"
+    square:
+    - - 3
+      - 6
+    color: Yellow
+    move: 1
   yellow_pawn_eight:
     code: "\e[0;33;49m ♙\e[0m"
     square:
@@ -169,10 +176,10 @@ chess_pieces:
   blue_pawn_four:
     code: "\e[0;94;49m ♟\e[0m"
     square:
-    - - 6
+    - - 4
       - 3
     color: Blue
-    move: 0
+    move: 1
   blue_pawn_five:
     code: "\e[0;94;49m ♟\e[0m"
     square:
@@ -190,10 +197,10 @@ chess_pieces:
   blue_pawn_seven:
     code: "\e[0;94;49m ♟\e[0m"
     square:
-    - - 3
-      - 5
+    - - 6
+      - 6
     color: Blue
-    move: 1
+    move: 0
   blue_pawn_eight:
     code: "\e[0;94;49m ♟\e[0m"
     square:
@@ -201,8 +208,7 @@ chess_pieces:
       - 7
     color: Blue
     move: 0
-pieces_lost:
-- "\e[0;33;49m ♙\e[0m"
-computer: 
-player: Yellow
-current_turn: Yellow
+pieces_lost: []
+computer: Yellow
+player: Blue
+current_turn: Blue

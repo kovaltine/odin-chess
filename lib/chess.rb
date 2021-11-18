@@ -20,12 +20,41 @@ class Chess
     @chess_pieces = start_chess_pieces
     @pieces_lost = []
     @filenames = []
-    choose_team
-    determine_computer
-    determine_human
+    # load a game when starting the program
     @team = 'Blue'
     load_game
     play_game
+  end
+
+  def play_game
+    board = Board.new
+    i = 1
+    @saved = false
+    until team_lost? || @saved
+      puts_pieces_lost
+      board.chess_board(@chess_pieces)
+
+      @chess_pieces = make_a_move
+      @team = toggle_team
+      i += 1
+      check_save(i)
+    end
+    end_game(team_lost?)
+  end
+
+  def end_game
+    if team_lost?
+      end_message
+    elsif @saved
+      display_saved_end
+    end
+  end
+
+  # make sure it's the player's turn before you ask if they want to save
+  def check_save(index)
+    p "index : #{index}"
+    p(index % 3)
+    save_game if @team == @player_team && (index % 3).zero?
   end
 
   def determine_computer
@@ -53,25 +82,19 @@ class Chess
     end
   end
 
-  def play_game
-    board = Board.new
-    until team_lost?
-      puts_pieces_lost
-      save_game
-      board.chess_board(@chess_pieces)
-      @chess_pieces = make_a_move
-      @team = toggle_team
-    end
-    end_message
-  end
-
   def load_game
-    puts 'would you like to load your game?'
+    puts 'would you like to load a game from a saved file?'
     input = gets.chomp.downcase
     case input
     when 'y'
-      load_file
+      choose_team unless load_file
+
+      # need a condition for when the loading has been aborted
+    else
+      choose_team
     end
+    determine_computer
+    determine_human
   end
 
   def save_game
@@ -80,11 +103,15 @@ class Chess
     case input
     when 'y'
       save_file
+      @saved == true
+      # ask if user wants to keep playing
+
     end
   end
 
   def make_a_move
     selection = player_turn
+    player_turn while selection.nil?
     chess_hash = move_piece(selection)
     until chess_hash.is_a?(Hash)
       selection = player_turn

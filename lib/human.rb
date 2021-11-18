@@ -45,6 +45,7 @@ class Human
       return false
     end
 
+    p "human move_arr #{move_arr}"
     move_arr.each do |option|
       return true if valid_piece_move?(option, @opposing_team)
     end
