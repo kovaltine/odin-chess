@@ -271,6 +271,7 @@ module ChessPieces
     end
     moves.push(move_vertical_one_square)
     moves = limit_axis_options_pawn(moves)
+    # attack moves not working properly
     attack = move_diagonal_one_square
     moves.push(attack)
   end

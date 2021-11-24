@@ -61,7 +61,7 @@ class Human
       update_position(new_coord, old_coord)
     else
       invalid_move
-      select_different_piece? ? move_piece : new_piece_position(old_coord, move_arr)
+      select_different_piece? ? false : new_piece_position(old_coord, move_arr)
     end
   end
 

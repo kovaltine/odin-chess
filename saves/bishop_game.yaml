@@ -27,8 +27,8 @@ chess_pieces:
   yellow_queen_bishop:
     code: "\e[0;33;49m ♗\e[0m"
     square:
-    - - 0
-      - 2
+    - - 2
+      - 0
     color: Yellow
   yellow_king_bishop:
     code: "\e[0;33;49m ♗\e[0m"
@@ -58,17 +58,10 @@ chess_pieces:
   yellow_pawn_two:
     code: "\e[0;33;49m ♙\e[0m"
     square:
-    - - 1
+    - - 3
       - 1
     color: Yellow
-    move: 0
-  yellow_pawn_three:
-    code: "\e[0;33;49m ♙\e[0m"
-    square:
-    - - 1
-      - 2
-    color: Yellow
-    move: 0
+    move: 1
   yellow_pawn_four:
     code: "\e[0;33;49m ♙\e[0m"
     square:
@@ -93,7 +86,7 @@ chess_pieces:
   yellow_pawn_seven:
     code: "\e[0;33;49m ♙\e[0m"
     square:
-    - - 3
+    - - 2
       - 6
     color: Yellow
     move: 1
@@ -131,7 +124,7 @@ chess_pieces:
   blue_queen_bishop:
     code: "\e[0;94;49m ♝\e[0m"
     square:
-    - - 7
+    - - 1
       - 2
     color: Blue
   blue_king_bishop:
@@ -162,10 +155,10 @@ chess_pieces:
   blue_pawn_two:
     code: "\e[0;94;49m ♟\e[0m"
     square:
-    - - 6
+    - - 4
       - 1
     color: Blue
-    move: 0
+    move: 1
   blue_pawn_three:
     code: "\e[0;94;49m ♟\e[0m"
     square:
@@ -176,10 +169,10 @@ chess_pieces:
   blue_pawn_four:
     code: "\e[0;94;49m ♟\e[0m"
     square:
-    - - 4
+    - - 6
       - 3
     color: Blue
-    move: 1
+    move: 0
   blue_pawn_five:
     code: "\e[0;94;49m ♟\e[0m"
     square:
@@ -208,7 +201,8 @@ chess_pieces:
       - 7
     color: Blue
     move: 0
-pieces_lost: []
+pieces_lost:
+- "\e[0;33;49m ♙\e[0m"
 computer: Yellow
 player: Blue
 current_turn: Blue

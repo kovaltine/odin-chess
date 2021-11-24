@@ -33,13 +33,13 @@ class Chess
     until team_lost? || @saved
       puts_pieces_lost
       board.chess_board(@chess_pieces)
-
       @chess_pieces = make_a_move
       @team = toggle_team
-      i += 1
-      check_save(i)
+      i += increment_player_round
+      board.chess_board(@chess_pieces)
+      @saved = check_save(i)
     end
-    end_game(team_lost?)
+    end_game
   end
 
   def end_game
@@ -50,11 +50,27 @@ class Chess
     end
   end
 
+  def increment_player_round
+    return 1 if @team == @player_team
+
+    0
+  end
+
   # make sure it's the player's turn before you ask if they want to save
   def check_save(index)
     p "index : #{index}"
     p(index % 3)
-    save_game if @team == @player_team && (index % 3).zero?
+    return false unless @team == @player_team && (index % 3).zero?
+
+    save_game? ? keep_playing? : false
+  end
+
+  def keep_playing?
+    puts 'would you like to keep playing?'
+    input = gets.chomp.downcase
+    return true unless input == 'y'
+
+    false
   end
 
   def determine_computer
@@ -97,15 +113,15 @@ class Chess
     determine_human
   end
 
-  def save_game
+  def save_game?
     puts 'would you like to save your game?'
     input = gets.chomp.downcase
     case input
     when 'y'
       save_file
-      @saved == true
-      # ask if user wants to keep playing
-
+      true
+    else
+      false
     end
   end
 
