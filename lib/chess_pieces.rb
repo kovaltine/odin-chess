@@ -271,9 +271,18 @@ module ChessPieces
     end
     moves.push(move_vertical_one_square)
     moves = limit_axis_options_pawn(moves)
-    # attack moves not working properly
     attack = move_diagonal_one_square
-    moves.push(attack)
+
+    add_attack(attack, moves)
+  end
+
+  def add_attack(attack, moves)
+    attack.each do |option|
+      break if option.nil?
+
+      moves.push(option)
+    end
+    moves
   end
 
   # put this where the move has been confirmed
@@ -296,24 +305,25 @@ module ChessPieces
     end
   end
 
-  def check_pawn_diagonal_moves(arr, color)
-    diagonal_moves = []
-    @chess_pieces.each do |_key, value|
-      value.each_key do |_property|
-        next unless value['color'] != color
-        next unless arr.include?(value['square'].flatten)
+  # def check_pawn_diagonal_moves(arr, color)
+  #   diagonal_moves = []
+  #   @chess_pieces.each do |_key, value|
+  #     value.each_key do |_property|
+  #       next unless value['color'] != color
+  #       next unless arr.include?(value['square'].flatten)
 
-        diagonal_moves.push(value['square'].flatten)
-      end
-    end
-    check_diagonal_moves_arr(diagonal_moves)
-  end
+  #       diagonal_moves.push(value['square'].flatten)
+  #     end
+  #   end
+  #   p "check_pawn_diagonal_moves #{check_diagonal_moves_arr(diagonal_moves)}"
+  #   check_diagonal_moves_arr(diagonal_moves)
+  # end
 
   def check_diagonal_moves_arr(diagonal_moves)
     if diagonal_moves.empty?
       diagonal_moves
     else
-      diagonal_moves.uniq!.flatten(1)
+      diagonal_moves.flatten(1)
     end
   end
 
@@ -327,6 +337,7 @@ module ChessPieces
       diagonal.push(find_diagonal_match([+1, -1], square)).flatten(1)
       diagonal.push(find_diagonal_match([+1, +1], square)).flatten(1)
     end
+    p "pawn_diagonal_option #{diagonal}"
     diagonal
   end
 
@@ -343,7 +354,9 @@ module ChessPieces
     square = @piece_hash.fetch('square').flatten(1)
     color = @piece_hash.fetch('color')
     diagonal = pawn_diagonal_option(color, square)
-    check_pawn_diagonal_moves(diagonal, color)
+    p "move_diagonal_one_square #{diagonal.flatten(1)}"
+    diagonal.flatten(1)
+    # check_pawn_diagonal_moves(diagonal, color)
   end
 
   def move_vertical_one_square

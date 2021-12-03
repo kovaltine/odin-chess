@@ -68,7 +68,7 @@ class Computer
 
   # dunno if i need this here
   def valid_piece_move?(coordinates, team = @colour)
-    p 'in valid piece move computer'
+    p 'invalid piece move computer'
     return false if coordinates.nil?
 
     @chess_pieces.each_pair do |_key, value|

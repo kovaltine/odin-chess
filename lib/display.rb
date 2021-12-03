@@ -57,11 +57,11 @@ module Display
 
   def ask_for_move_computer
     puts '...'
-    sleep(1)
+    sleep(0.5)
     puts '...'
-    sleep(1)
+    sleep(0.5)
     puts '...'
-    sleep(1)
+    sleep(0.5)
   end
 
   def display_saved_end

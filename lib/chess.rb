@@ -20,7 +20,6 @@ class Chess
     @chess_pieces = start_chess_pieces
     @pieces_lost = []
     @filenames = []
-    # load a game when starting the program
     @team = 'Blue'
     load_game
     play_game
@@ -36,7 +35,7 @@ class Chess
       @chess_pieces = make_a_move
       @team = toggle_team
       i += increment_player_round
-      board.chess_board(@chess_pieces)
+      # board.chess_board(@chess_pieces)
       @saved = check_save(i)
     end
     end_game
@@ -58,8 +57,6 @@ class Chess
 
   # make sure it's the player's turn before you ask if they want to save
   def check_save(index)
-    p "index : #{index}"
-    p(index % 3)
     return false unless @team == @player_team && (index % 3).zero?
 
     save_game? ? keep_playing? : false
@@ -105,7 +102,6 @@ class Chess
     when 'y'
       choose_team unless load_file
 
-      # need a condition for when the loading has been aborted
     else
       choose_team
     end
