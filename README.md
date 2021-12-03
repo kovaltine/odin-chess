@@ -9,11 +9,15 @@ This is a command line chess game where you can play against the computer. The o
 4. prevents illegal moves
 5. board can be saved at any time
 
+
 How to Play:
 1. move to the odin-chess folder in a Ruby-friendly terminal (Linux, MacOS)
 2. type: ruby game.rb
 3. follow the instructions in the terminal
 4. Have Fun!
+
+
+
 
 
 
