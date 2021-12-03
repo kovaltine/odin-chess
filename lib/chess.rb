@@ -33,9 +33,9 @@ class Chess
       puts_pieces_lost
       board.chess_board(@chess_pieces)
       @chess_pieces = make_a_move
+      team_lost?
       @team = toggle_team
       i += increment_player_round
-      # board.chess_board(@chess_pieces)
       @saved = check_save(i)
     end
     end_game
@@ -43,6 +43,7 @@ class Chess
 
   def end_game
     if team_lost?
+      @team = toggle_team
       end_message
     elsif @saved
       display_saved_end
@@ -122,14 +123,24 @@ class Chess
   end
 
   def make_a_move
-    selection = player_turn
-    player_turn while selection.nil?
+    selection = player_turn until search_for_selection(selection)
     chess_hash = move_piece(selection)
     until chess_hash.is_a?(Hash)
       selection = player_turn
       chess_hash = move_piece(selection)
     end
     chess_hash
+  end
+
+  def search_for_selection(selection)
+    @chess_pieces.each_pair do |_key, value|
+      value.each_pair do |property, data|
+        next unless property == 'square' && data == [selection]
+
+        return true
+      end
+    end
+    false
   end
 
   def player_turn

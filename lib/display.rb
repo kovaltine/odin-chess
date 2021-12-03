@@ -2,11 +2,6 @@
 
 require 'colorize'
 
-# .colorize(:yellow)
-# .colorize(:light_blue)
-# .colorize(:red)
-# .colorize(:blue)
-
 # display information in the console
 module Display
   def puts_pieces_lost

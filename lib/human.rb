@@ -45,7 +45,7 @@ class Human
       return false
     end
 
-    p "human move_arr #{move_arr}"
+    # p "human move_arr #{move_arr}"
     move_arr.each do |option|
       return true if valid_piece_move?(option, @opposing_team)
     end
@@ -74,8 +74,6 @@ class Human
 
   def valid_piece_move?(coordinates, team = @colour)
     return false if coordinates.nil?
-
-    # return false unless @chess_pieces.fetch_values['square'].include?([coordinates])
 
     @chess_pieces.each_pair do |_key, value|
       return true if value['color'] == team && value['square'] == [coordinates]

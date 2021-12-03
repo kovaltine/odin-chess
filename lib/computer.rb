@@ -6,7 +6,6 @@ require_relative './surrounding_piece'
 require_relative './display'
 require_relative './chess'
 
-# computer and human might need to inherit from chess
 # computer player
 class Computer
   include ChessPieces
@@ -58,7 +57,7 @@ class Computer
 
       filtered.push(option) unless removed_options.include?(option)
     end
-    p "computer filter move_arr #{filtered}"
+    # p "computer filter move_arr #{filtered}"
     filtered
   end
 

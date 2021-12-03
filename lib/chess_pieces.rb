@@ -23,8 +23,6 @@ BLUE_PIECES = {
   'pawn' => " \u265F".colorize(:light_blue)
 }.freeze
 
-# might need a counter for the pawns to track if it's their first move
-# have to change all the names to their colours
 CHESS_PIECES = {
   'yellow_queen_rook' => {
     'code' => YELLOW_PIECES.fetch('rook'),
@@ -221,13 +219,11 @@ module ChessPieces
 
     piece_type = find_piece_type
     piece_move_arr(piece_type, coord)
-    # bring limit_axis_options to this function
   end
 
   # get the arr of potential moves
   def piece_move_arr(type, square)
     @start = square.freeze
-    # hopefully can get rid of @type
     @type = type
     case type
     when 'rook'
@@ -239,7 +235,6 @@ module ChessPieces
     when 'bishop'
       Bishop.new(@surrounding, square).bishop_pattern
     when 'queen'
-      # queen would be adding together the rook and the bishop patterns
       queen_pattern(square)
     when 'king'
       king_pattern(square)
@@ -247,7 +242,6 @@ module ChessPieces
   end
 
   ## King ##
-  # could use the first axis options of the queen
   def king_pattern(square)
     like_a_rook = Rook.new(@surrounding, square).king_pattern
     like_a_bishop = Bishop.new(@surrounding, square).king_pattern
@@ -285,10 +279,8 @@ module ChessPieces
     moves
   end
 
-  # put this where the move has been confirmed
   def increment_pawn_move
     add_move = @piece_hash
-    # change the value in a hash:
     add_move.store('move', 1)
     add_move
   end
@@ -337,7 +329,6 @@ module ChessPieces
       diagonal.push(find_diagonal_match([+1, -1], square)).flatten(1)
       diagonal.push(find_diagonal_match([+1, +1], square)).flatten(1)
     end
-    p "pawn_diagonal_option #{diagonal}"
     diagonal
   end
 
@@ -354,9 +345,7 @@ module ChessPieces
     square = @piece_hash.fetch('square').flatten(1)
     color = @piece_hash.fetch('color')
     diagonal = pawn_diagonal_option(color, square)
-    p "move_diagonal_one_square #{diagonal.flatten(1)}"
     diagonal.flatten(1)
-    # check_pawn_diagonal_moves(diagonal, color)
   end
 
   def move_vertical_one_square
@@ -413,7 +402,6 @@ module ChessPieces
         return @chess_pieces.fetch(key)
       end
     end
-    # taking the new coord and using it as piece selection
     nil
   end
 end
